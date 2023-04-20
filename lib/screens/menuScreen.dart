@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:practica_inventario/screens/purchaseScreen.dart';
+import 'package:practica_inventario/screens/salesScreen.dart';
+
+import 'menuRegistrosScreen.dart';
 
 class MenuScreen extends StatelessWidget {
    
@@ -6,9 +10,63 @@ class MenuScreen extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
+      appBar: AppBar(title: const Text('Menu')),
       body: Center(
-         child: Text('MenuScreen'),
+         child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Card(
+                child:GestureDetector(
+                  onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder:(context) => const MenuRegistrosScreen())
+                      );
+                  },
+                  child: const ListTile(
+                    leading: Icon(Icons.app_registration_outlined, size: 30,),
+                    title: Text("Register",style: TextStyle(
+                      fontSize: 20.0
+                    )),
+                  ),
+                )
+              ),
+              Card(
+                child:GestureDetector(
+                  onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder:(context) => const SalesScreen())
+                      );
+                  },
+                  child: const ListTile(
+                    leading: Icon(Icons.sell, size: 30,),
+                    title: Text("Sales",style: TextStyle(
+                      fontSize: 20.0
+                    )),
+                  ),
+                )
+              ),
+              Card(
+                child:GestureDetector(
+                  onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder:(context) => const PurchaseScreen())
+                      );
+                  },
+                  child: const ListTile(
+                    leading: Icon(Icons.shopping_bag, size: 30,),
+                    title: Text("Purchase",style: TextStyle(
+                      fontSize: 20.0
+                    )),
+                  ),
+                )
+              ),
+
+            ],
+         )
       ),
     );
   }
