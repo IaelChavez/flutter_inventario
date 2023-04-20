@@ -1,14 +1,50 @@
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {
-   
-  const LoginScreen({Key? key}) : super(key: key);
-  
+  LoginScreen({Key? key}) : super(key: key);
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-         child: Text('LoginScreen'),
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Iniciar sesión',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 20),
+            TextFormField(
+              controller: emailController,
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecoration(
+                hintText: 'Correo electrónico',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 20),
+            TextFormField(
+              controller: passwordController,
+              obscureText: true,
+              decoration: InputDecoration(
+                hintText: 'Contraseña',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // Aquí va la lógica para validar los datos de inicio de sesión
+              },
+              child: Text('Iniciar sesión'),
+            ),
+          ],
+        ),
       ),
     );
   }
