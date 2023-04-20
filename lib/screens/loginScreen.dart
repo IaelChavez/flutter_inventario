@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:practica_inventario/screens/menuScreen.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -39,7 +40,11 @@ class LoginScreen extends StatelessWidget {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Aquí va la lógica para validar los datos de inicio de sesión
+                //  ToDo: Aquí va la lógica para validar los datos de inicio de sesión
+                Navigator.push(
+                        context,
+                        MaterialPageRoute(builder:(context) => const MenuScreen())
+                      );
               },
               child: Text('Iniciar sesión'),
             ),
