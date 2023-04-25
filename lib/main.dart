@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:practica_inventario/screens/loginScreen.dart';
 import 'package:practica_inventario/screens/menuScreen.dart';
+import 'package:practica_inventario/screens/userScreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,8 +17,9 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        fontFamily: 'PlanetKosmos',
       ),
-      home: LoginScreen(),
+      home: userView(),
     );
   }
 }
