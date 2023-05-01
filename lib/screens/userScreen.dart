@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:practica_inventario/widgets/appbar.dart';
 import 'package:practica_inventario/widgets/textField.dart';
 
@@ -12,6 +13,7 @@ class _userView extends State<userView> {
 
   final _formKey = GlobalKey<FormState>();
 
+  // ignore: unused_field
   final List<String> _errors = [];
 
   final TextEditingController idController = TextEditingController();
@@ -38,13 +40,6 @@ class _userView extends State<userView> {
   String _email = '';
   String _password = '';
 
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      // submit form data
-    }
-  }
-
   bool _validar(String value) {
     if (value.isEmpty) {
       return true;
@@ -59,13 +54,13 @@ class _userView extends State<userView> {
         title: 'App ',
         actions: [
           IconButton(
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
             onPressed: () {
               // Implementar funcionalidad de búsqueda
             },
           ),
           IconButton(
-            icon: Icon(Icons.menu),
+            icon: const Icon(Icons.menu),
             onPressed: () {
               // Implementar funcionalidad de menú
             },
@@ -73,7 +68,7 @@ class _userView extends State<userView> {
         ],
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 25),
+        padding: const EdgeInsets.symmetric(horizontal: 25),
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/fondo.jpg'),
@@ -87,8 +82,8 @@ class _userView extends State<userView> {
               color: Colors.white.withOpacity(0.8),
               borderRadius: BorderRadius.circular(10.0),
             ),
-            margin: EdgeInsets.symmetric(vertical: 50.0, horizontal: 20.0),
-            padding: EdgeInsets.all(20.0),
+            margin: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 20.0),
+            padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
                 Form(
@@ -99,64 +94,88 @@ class _userView extends State<userView> {
                       CustomTextField(
                         controller: idController,
                         label: 'id',        
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                         onChanged: (value) {
                           setState(() {
                             _id = value;
                           });
                         },
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       CustomTextField(
                         controller: nameController,
-                        label: 'nombre',      
+                        label: 'nombre', 
+                        keyboardType: TextInputType.text,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]'))
+                        ],      
                         onChanged: (value) {
                           setState(() {
                             _name = value;
                           });
                         }, 
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       CustomTextField(
                         controller: lastNameController,
-                        label: 'apellido',        
+                        label: 'apellido',    
+                        keyboardType: TextInputType.text,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]'))
+                        ],     
                         onChanged: (value) {
                           setState(() {
                             _lastName = value;
                           });
                         },
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       CustomTextField(
                         controller: ageController,
                         label: 'edad',        
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                         onChanged: (value) {
                           setState(() {
                             _age = value;
                           });
                         },
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       CustomTextField(
                         controller: genderController,
-                        label: 'genero',        
+                        label: 'genero',     
+                        keyboardType: TextInputType.text,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]'))
+                        ],    
                         onChanged: (value) {
                           setState(() {
                             _gender = value;
                           });
                         },
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       CustomTextField(
                         controller: emailController,
                         label: 'correo', 
                         keyboardType: TextInputType.emailAddress,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.singleLineFormatter,
+                          
+                        ], 
                         onChanged: (value) {
                           setState(() {
                             _email = value;
                           });
                         },
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       CustomTextField(
                         controller: passwordController,
                         label: 'contra',
@@ -167,37 +186,37 @@ class _userView extends State<userView> {
                           });
                         },
                       ),
-                      SizedBox(height: 40),
+                      const SizedBox(height: 20),
                     ],
                   ),
                 ),
                 Visibility(
                   visible: _showErrorId,
-                  child: Text('Rellena el id.'),
+                  child: const Text('Rellena el id.'),
                 ),
                 Visibility(
                   visible: _showErrorName,
-                  child: Text('Rellena el nombre.'),
+                  child: const Text('Rellena el nombre.'),
                 ),
                 Visibility(
                   visible: _showErrorLastName,
-                  child: Text('Rellena el apellido.'),
+                  child: const Text('Rellena el apellido.'),
                 ),
                  Visibility(
                   visible: _showErrorAge,
-                  child: Text('Rellena la edad.'),
+                  child: const Text('Rellena la edad.'),
                 ),
                  Visibility(
                   visible: _showErrorGender,
-                  child: Text('Rellena el genero.'),
+                  child: const Text('Rellena el genero.'),
                 ),
                  Visibility(
                   visible: _showErrorEmail,
-                  child: Text('Rellena el correo.'),
+                  child: const Text('Rellena el correo.'),
                 ),
                  Visibility(
                   visible: _showErrorPassword,
-                  child: Text('Rellena la contraseña.'),
+                  child: const Text('Rellena la contraseña.'),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -236,7 +255,7 @@ class _userView extends State<userView> {
                       }
                     });
                   },
-                  child: Text('Guardar'),
+                  child: const Text('Guardar'),
                 ),
             ],)
           ),

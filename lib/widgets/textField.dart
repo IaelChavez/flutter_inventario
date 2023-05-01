@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomTextField extends StatefulWidget  {
   final String label;
@@ -7,6 +8,7 @@ class CustomTextField extends StatefulWidget  {
   final bool obscureText;
   final String? Function(String?)? validator;
   final void Function(String) onChanged;
+  final List<TextInputFormatter>? inputFormatters;
 
   const CustomTextField({
     Key? key,
@@ -16,6 +18,7 @@ class CustomTextField extends StatefulWidget  {
     this.obscureText = false,
     this.validator,
     required this.onChanged,
+    this.inputFormatters,
   }) : super(key: key);
 
   @override
@@ -39,6 +42,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       ),
       validator: widget.validator,
       onChanged: widget.onChanged,
+      inputFormatters: widget.inputFormatters,
     );
   }
 }
