@@ -3,13 +3,15 @@ import 'package:flutter/services.dart';
 import 'package:practica_inventario/widgets/appbar.dart';
 import 'package:practica_inventario/widgets/textField.dart';
 
-class productView extends StatefulWidget {
+import '../widgets/button.dart';
+
+class ProductView extends StatefulWidget {
   @override
-  _productView createState() => _productView();
+  _ProductView createState() => _ProductView();
 }
 
-class _productView extends State<productView> {
-  _productView({Key? key}) : super();
+class _ProductView extends State<ProductView> {
+  _ProductView({Key? key}) : super();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -46,6 +48,8 @@ class _productView extends State<productView> {
     return false;
   }
 
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,13 +57,13 @@ class _productView extends State<productView> {
         title: 'App ',
         actions: [
           IconButton(
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
             onPressed: () {
               // Implementar funcionalidad de búsqueda
             },
           ),
           IconButton(
-            icon: Icon(Icons.menu),
+            icon: const Icon(Icons.menu),
             onPressed: () {
               // Implementar funcionalidad de menú
             },
@@ -67,7 +71,7 @@ class _productView extends State<productView> {
         ],
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 25),
+        padding: const EdgeInsets.symmetric(horizontal: 25),
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/fondo.jpg'),
@@ -81,8 +85,8 @@ class _productView extends State<productView> {
               color: Colors.white.withOpacity(0.8),
               borderRadius: BorderRadius.circular(10.0),
             ),
-            margin: EdgeInsets.symmetric(vertical: 50.0, horizontal: 20.0),
-            padding: EdgeInsets.all(20.0),
+            margin: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 20.0),
+            padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
                 Form(
@@ -103,7 +107,7 @@ class _productView extends State<productView> {
                           });
                         },
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       CustomTextField(
                         controller: nameController,
                         label: 'nombre',     
@@ -117,7 +121,7 @@ class _productView extends State<productView> {
                           });
                         }, 
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       CustomTextField(
                         controller: descriptionController,
                         label: 'descripcion',     
@@ -130,7 +134,7 @@ class _productView extends State<productView> {
                           });
                         },
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       CustomTextField(
                         controller: unitsController,
                         label: 'unidades',        
@@ -143,7 +147,7 @@ class _productView extends State<productView> {
                           });
                         },
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       CustomTextField(
                         controller: costController,
                         label: 'costo',        
@@ -157,7 +161,7 @@ class _productView extends State<productView> {
                           });
                         },
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       CustomTextField(
                         controller: priceController,
                         label: 'precio', 
@@ -171,7 +175,7 @@ class _productView extends State<productView> {
                           });
                         },
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       CustomTextField(
                         controller: utilityController,
                         label: 'utilidad',
@@ -185,39 +189,12 @@ class _productView extends State<productView> {
                           });
                         },
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                     ],
                   ),
                 ),
-                Visibility(
-                  visible: _showErrorId,
-                  child: Text('Rellena el id.'),
-                ),
-                Visibility(
-                  visible: _showErrorName,
-                  child: Text('Rellena el nombre.'),
-                ),
-                Visibility(
-                  visible: _showErrorDescription,
-                  child: Text('Rellena la descripcion.'),
-                ),
-                 Visibility(
-                  visible: _showErrorUnits,
-                  child: Text('Rellena las unidades.'),
-                ),
-                 Visibility(
-                  visible: _showErrorCost,
-                  child: Text('Rellena el costo.'),
-                ),
-                 Visibility(
-                  visible: _showErrorPrice,
-                  child: Text('Rellena el precio.'),
-                ),
-                 Visibility(
-                  visible: _showErrorUtility,
-                  child: Text('Rellena la utilidad.'),
-                ),
-                ElevatedButton(
+                GradientButton(
+                  text: 'Guardar',
                   onPressed: () {
                     setState(() {
                       _showErrorId = false;
@@ -254,7 +231,35 @@ class _productView extends State<productView> {
                       }
                     });
                   },
-                  child: Text('Guardar'),
+                ),
+                const SizedBox(height: 15),
+                Visibility(
+                  visible: _showErrorId,
+                  child: const Text('Rellena el id.'),
+                ),
+                Visibility(
+                  visible: _showErrorName,
+                  child: const Text('Rellena el nombre.'),
+                ),
+                Visibility(
+                  visible: _showErrorDescription,
+                  child: const Text('Rellena la descripcion.'),
+                ),
+                 Visibility(
+                  visible: _showErrorUnits,
+                  child: const Text('Rellena las unidades.'),
+                ),
+                 Visibility(
+                  visible: _showErrorCost,
+                  child: const Text('Rellena el costo.'),
+                ),
+                 Visibility(
+                  visible: _showErrorPrice,
+                  child: const Text('Rellena el precio.'),
+                ),
+                 Visibility(
+                  visible: _showErrorUtility,
+                  child: const Text('Rellena la utilidad.'),
                 ),
             ],)
           ),

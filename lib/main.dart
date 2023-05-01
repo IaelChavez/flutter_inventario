@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:flutter/material.dart';
 import 'package:practica_inventario/screens/loginScreen.dart';
 import 'package:practica_inventario/screens/menuScreen.dart';
@@ -20,7 +22,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'Romanica',
       ),
-      home: productView(),
+      home: ProductView(),
     );
   }
 }

@@ -190,34 +190,6 @@ class _userView extends State<userView> {
                     ],
                   ),
                 ),
-                Visibility(
-                  visible: _showErrorId,
-                  child: const Text('Rellena el id.'),
-                ),
-                Visibility(
-                  visible: _showErrorName,
-                  child: const Text('Rellena el nombre.'),
-                ),
-                Visibility(
-                  visible: _showErrorLastName,
-                  child: const Text('Rellena el apellido.'),
-                ),
-                 Visibility(
-                  visible: _showErrorAge,
-                  child: const Text('Rellena la edad.'),
-                ),
-                 Visibility(
-                  visible: _showErrorGender,
-                  child: const Text('Rellena el genero.'),
-                ),
-                 Visibility(
-                  visible: _showErrorEmail,
-                  child: const Text('Rellena el correo.'),
-                ),
-                 Visibility(
-                  visible: _showErrorPassword,
-                  child: const Text('Rellena la contraseña.'),
-                ),
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
@@ -256,6 +228,35 @@ class _userView extends State<userView> {
                     });
                   },
                   child: const Text('Guardar'),
+                ),
+                const SizedBox(height: 15),
+                Visibility(
+                  visible: _showErrorId,
+                  child: const Text('Rellena el id.'),
+                ),
+                Visibility(
+                  visible: _showErrorName,
+                  child: const Text('Rellena el nombre.'),
+                ),
+                Visibility(
+                  visible: _showErrorLastName,
+                  child: const Text('Rellena el apellido.'),
+                ),
+                 Visibility(
+                  visible: _showErrorAge,
+                  child: const Text('Rellena la edad.'),
+                ),
+                 Visibility(
+                  visible: _showErrorGender,
+                  child: const Text('Rellena el genero.'),
+                ),
+                 Visibility(
+                  visible: _showErrorEmail,
+                  child: const Text('Rellena el correo.'),
+                ),
+                 Visibility(
+                  visible: _showErrorPassword,
+                  child: const Text('Rellena la contraseña.'),
                 ),
             ],)
           ),

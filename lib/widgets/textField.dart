@@ -36,7 +36,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       keyboardType: widget.keyboardType,
       obscureText: widget.obscureText,
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.symmetric(vertical: 10.0),
+        contentPadding: EdgeInsets.only(left: 10.0),
         labelText: widget.label,
         border: OutlineInputBorder(),
       ),
