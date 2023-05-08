@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:practica_inventario/screens/purchaseScreen.dart';
-import 'package:practica_inventario/screens/salesScreen.dart';
-
-import 'menuRegistrosScreen.dart';
+import 'package:practica_inventario/screens/screens.dart';
 
 class MenuScreen extends StatelessWidget {
    
@@ -37,7 +34,7 @@ class MenuScreen extends StatelessWidget {
                   onTap: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder:(context) => const SalesScreen())
+                        MaterialPageRoute(builder:(context) => SalesScreen())
                       );
                   },
                   child: const ListTile(
@@ -53,7 +50,7 @@ class MenuScreen extends StatelessWidget {
                   onTap: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder:(context) => const PurchaseScreen())
+                        MaterialPageRoute(builder:(context) =>  PurchaseScreen())
                       );
                   },
                   child: const ListTile(

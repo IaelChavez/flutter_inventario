@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:practica_inventario/screens/screens.dart';
 
 class MenuRegistrosScreen extends StatelessWidget {
   const MenuRegistrosScreen({Key? key}) : super(key: key);
@@ -23,7 +24,7 @@ class MenuRegistrosScreen extends StatelessWidget {
                   onTap: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder:(context) => const MenuRegistrosScreen())
+                        MaterialPageRoute(builder:(context) => userView())
                       );
                   },
                   child: const ListTile(
@@ -39,7 +40,7 @@ class MenuRegistrosScreen extends StatelessWidget {
                   onTap: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder:(context) => const MenuRegistrosScreen())
+                        MaterialPageRoute(builder:(context) => ProductView())
                       );
                   },
                   child: const ListTile(
