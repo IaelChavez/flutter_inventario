@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:practica_inventario/screens/screens.dart';
 import 'package:practica_inventario/themes/app_theme.dart';
 
+import 'List/userList.dart';
+
 import 'firebase/firebase_options.dart';
 
 void main() async {
@@ -26,7 +28,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: AppTheme.lightTheme,
-      home: LoginScreen(),
+      home: prueba(),
     );
   }
 }
