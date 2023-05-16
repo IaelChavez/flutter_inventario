@@ -71,20 +71,6 @@ class _userView extends State<userView> {
     return Scaffold(
         appBar: CustomAppBar(
           title: 'App ',
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () {
-                // Implementar funcionalidad de búsqueda
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () {
-                // Implementar funcionalidad de menú
-              },
-            ),
-          ],
         ),
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 25),

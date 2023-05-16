@@ -5,3 +5,4 @@ export 'package:practica_inventario/screens/productScreen.dart';
 export 'package:practica_inventario/screens/purchaseScreen.dart';
 export 'package:practica_inventario/screens/salesScreen.dart';
 export 'package:practica_inventario/screens/userScreen.dart';
+export 'package:practica_inventario/screens/lists/lists.dart';

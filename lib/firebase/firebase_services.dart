@@ -24,11 +24,9 @@ Future<void> addPurchase(Map<String, dynamic> data) async {
 
 Future<List<User>> getUsers() async {
   List<User> users = [];
-
-  // Accede a la colección 'users' en Firestore
   QuerySnapshot<Map<String, dynamic>> querySnapshot =
       await FirebaseFirestore.instance.collection('users').get();
-  // Recorre los documentos y crea objetos User
+
   querySnapshot.docs.forEach((doc) {
     User user = User(
       id: doc.id,
@@ -41,8 +39,27 @@ Future<List<User>> getUsers() async {
     );
     users.add(user);
   });
-
   return users;
+}
+
+Future<User?>getDataFirebase(String documentId, String base) async {
+  try {
+    final snapshot = await FirebaseFirestore.instance
+        .collection(base)
+        .doc(documentId)
+        .get();
+
+    if (snapshot.exists) {
+      final user = User.fromDocumentSnapshot(snapshot);
+      return user;
+    } else {
+      print('Documento no encontrado');
+      return null;
+    }
+  } catch (e) {
+    print('Error al recuperar datos: $e');
+    return null;
+  }
 }
 
 void deleteDocument(String documentId) async {

@@ -3,32 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:practica_inventario/Model/UserModel.dart';
 import 'package:practica_inventario/widgets/widgets.dart';
 
+import '../screens/details/details.dart';
+
 class UserList extends StatelessWidget {
   final List<User> user;
   final IconData leadingIcon;
+  final String base;
 
-  UserList({required this.user, required this.leadingIcon});
+  UserList({required this.user, required this.leadingIcon, required this.base});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: 'App ',
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              // Implementar funcionalidad de búsqueda
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () {
-              // Implementar funcionalidad de menú
-            },
-          ),
-        ],
-      ),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         decoration: const BoxDecoration(
@@ -83,12 +69,17 @@ class UserList extends StatelessWidget {
                           IconButton(
                             icon: const Icon(Icons.delete),
                             onPressed: () {
-                              _deleteUser(context, usuario.id);
+                              _deleteUser(context, usuario.id, base);
                             },
                           ),
                         ]),
                         onTap: () {
-                          // consultar
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => UserDetail(documentId: usuario.id, base: base),
+                            ),
+                          );
                         }),
                   ),
                 );
@@ -101,18 +92,18 @@ class UserList extends StatelessWidget {
   }
 }
 
-void _deleteUser(BuildContext context, String documentId) async {
+void _deleteUser(BuildContext context, String documentId, String base) async {
   try {
     await FirebaseFirestore.instance
-        .collection('users')
+        .collection(base)
         .doc(documentId)
         .delete();
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Usuario eliminado correctamente')),
+      const SnackBar(content: Text('Usuario eliminado correctamente')),
     );
   } catch (e) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Error al eliminar el usuario')),
+      const SnackBar(content: Text('Error al eliminar el usuario')),
     );
   }
 }

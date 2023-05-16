@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:practica_inventario/screens/screens.dart';
 import 'package:practica_inventario/themes/app_theme.dart';
-import 'package:practica_inventario/widgets/lista.dart';
 
 import 'firebase/firebase_options.dart';
 

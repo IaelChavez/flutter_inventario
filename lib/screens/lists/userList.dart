@@ -12,8 +12,8 @@ class UsersList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Firebase Users'),
+      appBar: const CustomAppBar(
+        title: 'App ',
       ),
       body: FutureBuilder<List<User>>(
         future: getUsers(),
@@ -31,6 +31,7 @@ class UsersList extends StatelessWidget {
             return UserList(
               user: users,
               leadingIcon: Icons.person,
+              base: 'users',
               );
           }
         },
