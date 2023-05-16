@@ -1,20 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:practica_inventario/Model/user.dart';
+import 'package:practica_inventario/Model/UserModel.dart';
 import 'package:practica_inventario/widgets/widgets.dart';
 
 class UserList extends StatelessWidget {
   final List<User> user;
   final IconData leadingIcon;
-  final VoidCallback? onEditPressed;
-  final VoidCallback? onDeletePressed;
-  final VoidCallback? onTap;
 
-  UserList(
-      {required this.user,
-      required this.leadingIcon,
-      this.onEditPressed,
-      this.onDeletePressed,
-      this.onTap});
+  UserList({required this.user, required this.leadingIcon});
 
   @override
   Widget build(BuildContext context) {
@@ -69,28 +62,34 @@ class UserList extends StatelessWidget {
                     margin:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: ListTile(
-                      leading: CircleAvatar(
-                        radius: 17,
-                        backgroundColor: Colors.blue,
-                        child: Icon(
-                          leadingIcon,
-                          color: Colors.white,
+                        leading: CircleAvatar(
+                          radius: 17,
+                          backgroundColor: Colors.blue,
+                          child: Icon(
+                            leadingIcon,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                      title: Text(usuario.nombre),
-                      subtitle: Text(usuario.precio),
-                      trailing: Row(mainAxisSize: MainAxisSize.min, children: [
-                        IconButton(
-                          icon: const Icon(Icons.edit),
-                          onPressed: onEditPressed,
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: onDeletePressed,
-                        ),
-                      ]),
-                      onTap: onTap,
-                    ),
+                        title: Text(usuario.name),
+                        subtitle: Text(usuario.lastName),
+                        trailing:
+                            Row(mainAxisSize: MainAxisSize.min, children: [
+                          IconButton(
+                            icon: const Icon(Icons.edit),
+                            onPressed: () {
+                              // editar
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () {
+                              _deleteUser(context, usuario.id);
+                            },
+                          ),
+                        ]),
+                        onTap: () {
+                          // consultar
+                        }),
                   ),
                 );
               },
@@ -98,6 +97,22 @@ class UserList extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+void _deleteUser(BuildContext context, String documentId) async {
+  try {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(documentId)
+        .delete();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Usuario eliminado correctamente')),
+    );
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error al eliminar el usuario')),
     );
   }
 }

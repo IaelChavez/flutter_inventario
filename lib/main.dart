@@ -4,8 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:practica_inventario/screens/screens.dart';
 import 'package:practica_inventario/themes/app_theme.dart';
-
-import 'List/userList.dart';
+import 'package:practica_inventario/widgets/lista.dart';
 
 import 'firebase/firebase_options.dart';
 
@@ -28,7 +27,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: AppTheme.lightTheme,
-      home: prueba(),
+      home: UsersList(),
     );
   }
 }

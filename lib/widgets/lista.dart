@@ -1,40 +1,40 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:practica_inventario/Model/user.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:practica_inventario/firebase/firebase_services.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:practica_inventario/Model/UserModel.dart';
+import 'package:practica_inventario/widgets/listStatic.dart';
+import 'package:practica_inventario/widgets/widgets.dart';
 
-class ListaProductos extends StatelessWidget {
-  const ListaProductos({super.key});
+class UsersList extends StatelessWidget {
+  const UsersList({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('productos').snapshots(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return const Text('Error al obtener los datos');
-        }
-
-        if (!snapshot.hasData) {
-          return const Text('No hay datos disponibles');
-        }
-
-        final List<User> productos = snapshot.data!.docs.map((doc) {
-          final nombre = doc['nombre'] as String;
-          final precio = doc['precio'] as String;
-          return User(nombre: nombre, precio: precio);
-        }).toList();
-
-        return ListView.builder(
-          itemCount: productos.length,
-          itemBuilder: (context, index) {
-            final producto = productos[index];
-            return ListTile(
-              title: Text(producto.nombre),
-              subtitle: Text(producto.precio),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Firebase Users'),
+      ),
+      body: FutureBuilder<List<User>>(
+        future: getUsers(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
             );
-          },
-        );
-      },
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          } else {
+            List<User> users = snapshot.data!;
+            return UserList(
+              user: users,
+              leadingIcon: Icons.person,
+              );
+          }
+        },
+      ),
     );
   }
 }
