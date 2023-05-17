@@ -2,7 +2,7 @@ import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../Model/UserModel.dart';
+import '../Model/userModel.dart';
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 

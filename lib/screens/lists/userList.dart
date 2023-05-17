@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:practica_inventario/firebase/firebase_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:practica_inventario/Model/UserModel.dart';
+import 'package:practica_inventario/Model/userModel.dart';
 import 'package:practica_inventario/widgets/listStatic.dart';
 import 'package:practica_inventario/widgets/widgets.dart';
 
@@ -32,7 +32,7 @@ class UsersList extends StatelessWidget {
               items: users,
               leadingIcon: Icons.person,
               base: 'users',
-              itemBuilder: (user) => Text(user.name),
+              itemBuilder: (user) => Text('${user.name} ${user.lastName}'),
               idItem: (user) => user.id,
               );
           }

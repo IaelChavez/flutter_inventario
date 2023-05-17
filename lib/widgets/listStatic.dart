@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:practica_inventario/Model/UserModel.dart';
+import 'package:practica_inventario/Model/userModel.dart';
 import 'package:practica_inventario/widgets/widgets.dart';
 
-import '../screens/details/details.dart';
+import 'package:practica_inventario/widgets/detail.dart';
 
 class UserList<T> extends StatelessWidget {
   final List<T> items;
@@ -64,7 +64,7 @@ class UserList<T> extends StatelessWidget {
                           IconButton(
                             icon: const Icon(Icons.edit),
                             onPressed: () {
-                              // editar
+                              _updateUser(context, idItem(item), base);
                             },
                           ),
                           IconButton(
@@ -94,6 +94,22 @@ class UserList<T> extends StatelessWidget {
 }
 
 void _deleteUser(BuildContext context, String documentId, String base) async {
+  try {
+    await FirebaseFirestore.instance
+        .collection(base)
+        .doc(documentId)
+        .delete();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Eliminado correctamente')),
+    );
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Error al eliminar')),
+    );
+  }
+}
+
+void _updateUser(BuildContext context, String documentId, String base) async {
   try {
     await FirebaseFirestore.instance
         .collection(base)

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:practica_inventario/Model/UserModel.dart';
-import 'package:practica_inventario/screens/screens.dart';
+import 'package:practica_inventario/Model/userModel.dart';
+import 'package:practica_inventario/controllers/controllers.dart';
 
 class CustomCard extends StatelessWidget {
   final Object item;
+  final String base;
 
   CustomCard({
     required this.item,
+    required this.base
   });
 
   @override
@@ -32,7 +34,7 @@ class CustomCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    buildObjectDetails(item)
+                    buildObjectDetails(item, base)
                   ],
                 ),
               ),
