@@ -1,0 +1,1 @@
+export 'package:practica_inventario/Model/UserModel.dart';

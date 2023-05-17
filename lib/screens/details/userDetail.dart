@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:practica_inventario/screens/Cards/userCard.dart';
+import 'package:practica_inventario/screens/cards/userCard.dart';
+import 'package:practica_inventario/screens/lists/lists.dart';
 import 'package:practica_inventario/widgets/widgets.dart';
 import 'package:practica_inventario/firebase/firebase_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,26 +11,16 @@ import '../../Model/UserModel.dart';
 class UserDetail extends StatefulWidget {
   final String documentId;
   final String base;
+  final builderFromSnapshot;
 
-  UserDetail({required this.documentId, required this.base});
+  UserDetail({required this.documentId, required this.base, required this.builderFromSnapshot});
 
   @override
   _UserDetail createState() => _UserDetail();
 }
 
 class _UserDetail extends State<UserDetail> {
-  User? userData;
-
-  @override
-  void initState() {
-    super.initState();
-    getData();
-  }
-
-  Future<void> getData() async {
-    userData = await getDataFirebase(widget.documentId, widget.base);
-    print(userData!.age);
-  }
+  late Object item;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +28,7 @@ class _UserDetail extends State<UserDetail> {
       appBar: const CustomAppBar(
         title: 'App ',
       ),
-      body: FutureBuilder<User?>(
+      body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>?>(
         future: getDataFirebase(widget.documentId, widget.base),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -49,8 +40,15 @@ class _UserDetail extends State<UserDetail> {
               child: Text('Error: ${snapshot.error}'),
             );
           } else {
-            User user = snapshot.data!;
+            if (snapshot.hasData) {
+              DocumentSnapshot<Map<String, dynamic>> documentSnapshot = snapshot.data!;
 
+              item = DataItem(
+              snapshot: documentSnapshot, 
+              fromDocumentSnapshot: widget.builderFromSnapshot
+              );
+            } else {
+            }
             return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 decoration: const BoxDecoration(
@@ -69,8 +67,8 @@ class _UserDetail extends State<UserDetail> {
                       margin: const EdgeInsets.symmetric(
                           vertical: 50.0, horizontal: 20.0),
                       padding: const EdgeInsets.all(20.0),
-                      child: UserCard(
-                        user: user,
+                      child: CustomCard(
+                        item: item,
                       ),
                     ),
                   

@@ -5,12 +5,14 @@ import 'package:practica_inventario/widgets/widgets.dart';
 
 import '../screens/details/details.dart';
 
-class UserList extends StatelessWidget {
-  final List<User> user;
+class UserList<T> extends StatelessWidget {
+  final List<T> items;
   final IconData leadingIcon;
   final String base;
+  final Widget Function(T) itemBuilder;
+  final String Function(T) idItem;
 
-  UserList({required this.user, required this.leadingIcon, required this.base});
+  UserList({required this.items, required this.leadingIcon, required this.base, required this.itemBuilder, required this.idItem});
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +36,9 @@ class UserList extends StatelessWidget {
                 const EdgeInsets.symmetric(vertical: 50.0, horizontal: 20.0),
             padding: const EdgeInsets.all(20.0),
             child: ListView.builder(
-              itemCount: user.length,
+              itemCount: items.length,
               itemBuilder: (context, index) {
-                final usuario = user[index];
+                final item = items[index];
                 return Container(
                   height: 80, // Alto deseado del Card
                   child: Card(
@@ -56,8 +58,7 @@ class UserList extends StatelessWidget {
                             color: Colors.white,
                           ),
                         ),
-                        title: Text(usuario.name),
-                        subtitle: Text(usuario.lastName),
+                        title: itemBuilder(item),
                         trailing:
                             Row(mainAxisSize: MainAxisSize.min, children: [
                           IconButton(
@@ -69,7 +70,7 @@ class UserList extends StatelessWidget {
                           IconButton(
                             icon: const Icon(Icons.delete),
                             onPressed: () {
-                              _deleteUser(context, usuario.id, base);
+                              _deleteUser(context, idItem(item), base);
                             },
                           ),
                         ]),
@@ -77,7 +78,7 @@ class UserList extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => UserDetail(documentId: usuario.id, base: base),
+                              builder: (context) => UserDetail(documentId: idItem(item), base: base, builderFromSnapshot: userFromDocumentSnapshot,),
                             ),
                           );
                         }),
@@ -99,11 +100,11 @@ void _deleteUser(BuildContext context, String documentId, String base) async {
         .doc(documentId)
         .delete();
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Usuario eliminado correctamente')),
+      const SnackBar(content: Text('Eliminado correctamente')),
     );
   } catch (e) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Error al eliminar el usuario')),
+      const SnackBar(content: Text('Error al eliminar')),
     );
   }
 }

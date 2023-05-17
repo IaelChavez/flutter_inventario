@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:practica_inventario/Model/UserModel.dart';
+import 'package:practica_inventario/screens/screens.dart';
 
-class UserCard extends StatelessWidget {
-  final User user;
+class CustomCard extends StatelessWidget {
+  final Object item;
 
-  UserCard({
-    required this.user,
+  CustomCard({
+    required this.item,
   });
 
   @override
@@ -31,17 +32,7 @@ class UserCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    buildUserDetailRow('Name:', user.name),
-                    SizedBox(height: 8),
-                    buildUserDetailRow('Last Name:', user.lastName),
-                    SizedBox(height: 8),
-                    buildUserDetailRow('Age:', user.age),
-                    SizedBox(height: 8),
-                    buildUserDetailRow('Gender:', user.gender),
-                    SizedBox(height: 8),
-                    buildUserDetailRow('Email:', user.email),
-                    SizedBox(height: 8),
-                    buildUserDetailRow('Password:', user.password),
+                    buildObjectDetails(item)
                   ],
                 ),
               ),
@@ -49,25 +40,6 @@ class UserCard extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  Widget buildUserDetailRow(String label, String value) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Text(
-          value,
-          style: TextStyle(fontSize: 16),
-        ),
-      ],
     );
   }
 }

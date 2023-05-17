@@ -42,7 +42,7 @@ Future<List<User>> getUsers() async {
   return users;
 }
 
-Future<User?>getDataFirebase(String documentId, String base) async {
+Future<DocumentSnapshot<Map<String, dynamic>>?>getDataFirebase(String documentId, String base) async {
   try {
     final snapshot = await FirebaseFirestore.instance
         .collection(base)
@@ -50,8 +50,7 @@ Future<User?>getDataFirebase(String documentId, String base) async {
         .get();
 
     if (snapshot.exists) {
-      final user = User.fromDocumentSnapshot(snapshot);
-      return user;
+      return snapshot;
     } else {
       print('Documento no encontrado');
       return null;

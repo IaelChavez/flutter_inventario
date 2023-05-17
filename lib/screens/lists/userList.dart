@@ -29,9 +29,11 @@ class UsersList extends StatelessWidget {
           } else {
             List<User> users = snapshot.data!;
             return UserList(
-              user: users,
+              items: users,
               leadingIcon: Icons.person,
               base: 'users',
+              itemBuilder: (user) => Text(user.name),
+              idItem: (user) => user.id,
               );
           }
         },
