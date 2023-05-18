@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:practica_inventario/firebase/firebase_services.dart';
 
+import '../firebase/firebase_sales.dart';
 import '../widgets/appbar.dart';
 import '../widgets/button.dart';
 import '../widgets/textField.dart';
@@ -55,8 +55,8 @@ class _SalesScreen extends State<SalesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar(
-          title: 'App ',
+        appBar: const CustomAppBar(
+          title: 'Sale ',
         ),
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 25),

@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:practica_inventario/firebase/firebase_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:practica_inventario/Model/userModel.dart';
+import 'package:practica_inventario/screens/screens.dart';
 import 'package:practica_inventario/widgets/listStatic.dart';
 import 'package:practica_inventario/widgets/widgets.dart';
 
@@ -12,8 +13,17 @@ class UsersList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(
-        title: 'App ',
+      appBar: CustomAppBar(
+        title: 'Users ',
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => userView()));
+            },
+          ),
+        ],
       ),
       body: FutureBuilder<List<User>>(
         future: getUsers(),
@@ -28,13 +38,14 @@ class UsersList extends StatelessWidget {
             );
           } else {
             List<User> users = snapshot.data!;
-            return UserList(
+            return Lista(
               items: users,
               leadingIcon: Icons.person,
               base: 'users',
               itemBuilder: (user) => Text('${user.name} ${user.lastName}'),
               idItem: (user) => user.id,
-              );
+              builderFromSnapshot: userFromDocumentSnapshot,
+            );
           }
         },
       ),

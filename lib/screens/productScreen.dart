@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:practica_inventario/firebase/firebase_services.dart';
 import 'package:practica_inventario/widgets/appbar.dart';
 import 'package:practica_inventario/widgets/textField.dart';
 
+import '../firebase/firebase_product.dart';
 import '../widgets/button.dart';
 
 class ProductView extends StatefulWidget {
@@ -70,8 +70,8 @@ class _ProductView extends State<ProductView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar(
-          title: 'App ',
+        appBar: const CustomAppBar(
+          title: 'Product ',
         ),
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 25),

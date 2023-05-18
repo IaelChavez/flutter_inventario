@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:practica_inventario/screens/screens.dart';
 
+import '../widgets/appbar.dart';
+import '../widgets/button.dart';
+
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
 
@@ -10,6 +13,9 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const CustomAppBar(
+        title: 'Login ',
+      ),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
@@ -38,7 +44,7 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
+            GradientButton(
               onPressed: () {
                 //  ToDo: Aquí va la lógica para validar los datos de inicio de sesión
                 Navigator.push(
@@ -46,15 +52,16 @@ class LoginScreen extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) => const MenuScreen()));
               },
-              child: const Text('Iniciar sesión'),
+              text: 'Iniciar sesión',
             ),
-            ElevatedButton(
+            const SizedBox(height: 20),
+            GradientButton(
               onPressed: () {
                 //  ToDo: Aquí va la lógica para validar los datos de inicio de sesión
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => userView()));
               },
-              child: const Text('Registrarse'),
+              text: 'Registrarse',
             ),
           ],
         ),

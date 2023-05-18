@@ -5,7 +5,7 @@ import 'package:practica_inventario/controllers/controllers.dart';
 Widget buildObjectDetails(Object object, String base) {
   if (base == 'users') {
     DataItem<dynamic> data = object as DataItem<dynamic>;
-    User user= data.item;
+    User user = data.item;
     return Column(
       children: [
         buildDetailRow('Name:', user.name),
@@ -23,81 +23,78 @@ Widget buildObjectDetails(Object object, String base) {
     );
   } else if (base == 'products') {
     DataItem<dynamic> data = object as DataItem<dynamic>;
-    User user= data.item;
+    Product product = data.item;
     return Column(
       children: [
-        buildDetailRow('Name:', user.name),
+        buildDetailRow('Cost:', product.cost),
         SizedBox(height: 8),
-        buildDetailRow('Last Name:', user.lastName),
+        buildDetailRow('Description:', product.description),
         SizedBox(height: 8),
-        buildDetailRow('Age:', user.age),
+        buildDetailRow('Name:', product.name),
         SizedBox(height: 8),
-        buildDetailRow('Gender:', user.gender),
+        buildDetailRow('Price:', product.price),
         SizedBox(height: 8),
-        buildDetailRow('Email:', user.email),
+        buildDetailRow('Units:', product.units),
         SizedBox(height: 8),
-        buildDetailRow('Password:', user.password),
+        buildDetailRow('Utility:', product.utility),
       ],
     );
-  }  else if (base == 'sales') {
+  } else if (base == 'sales') {
     DataItem<dynamic> data = object as DataItem<dynamic>;
-    User user= data.item;
+    Sale sale = data.item;
     return Column(
       children: [
-        buildDetailRow('Name:', user.name),
+        buildDetailRow('IdA:', sale.idA),
         SizedBox(height: 8),
-        buildDetailRow('Last Name:', user.lastName),
+        buildDetailRow('IdProduct:', sale.idProduct),
         SizedBox(height: 8),
-        buildDetailRow('Age:', user.age),
+        buildDetailRow('Name:', sale.name),
         SizedBox(height: 8),
-        buildDetailRow('Gender:', user.gender),
-        SizedBox(height: 8),
-        buildDetailRow('Email:', user.email),
-        SizedBox(height: 8),
-        buildDetailRow('Password:', user.password),
+        buildDetailRow('Pieces:', sale.pieces),
       ],
     );
   } else if (base == 'purchases') {
     DataItem<dynamic> data = object as DataItem<dynamic>;
-    User user= data.item;
+    Purchase purchase = data.item;
     return Column(
       children: [
-        buildDetailRow('Name:', user.name),
+        buildDetailRow('Cant:', purchase.cant),
         SizedBox(height: 8),
-        buildDetailRow('Last Name:', user.lastName),
+        buildDetailRow('IdC:', purchase.idC),
         SizedBox(height: 8),
-        buildDetailRow('Age:', user.age),
+        buildDetailRow('IdProduct:', purchase.idProduct),
         SizedBox(height: 8),
-        buildDetailRow('Gender:', user.gender),
+        buildDetailRow('IdV:', purchase.idV),
         SizedBox(height: 8),
-        buildDetailRow('Email:', user.email),
+        buildDetailRow('Name:', purchase.name),
         SizedBox(height: 8),
-        buildDetailRow('Password:', user.password),
+        buildDetailRow('Pieces:', purchase.pieces),
+        SizedBox(height: 8),
+        buildDetailRow('Subtotal:', purchase.subtotal),
+        SizedBox(height: 8),
+        buildDetailRow('Total:', purchase.total),
       ],
     );
   }
   return Text('Object type not supported');
 }
 
-
-
-
 Widget buildDetailRow(String label, dynamic value) {
   return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Text(
+        label,
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
         ),
-        Text(
-          value,
-          style: TextStyle(fontSize: 16),
-        ),
-        SizedBox(height: 8),
-      ],
-    );
+      ),
+      Text(
+        value,
+        style: TextStyle(fontSize: 16),
+      ),
+      SizedBox(height: 8),
+    ],
+  );
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:practica_inventario/firebase/firebase_services.dart';
 
+import '../firebase/firebase_purchase.dart';
 import '../widgets/appbar.dart';
 import '../widgets/button.dart';
 import '../widgets/textField.dart';
@@ -75,8 +75,8 @@ class _PurchaseScreen extends State<PurchaseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar(
-          title: 'App ',
+        appBar: const CustomAppBar(
+          title: 'Purchase ',
         ),
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 25),

@@ -4,6 +4,8 @@ import 'package:practica_inventario/firebase/firebase_services.dart';
 import 'package:practica_inventario/widgets/appbar.dart';
 import 'package:practica_inventario/widgets/textField.dart';
 
+import '../widgets/button.dart';
+
 class userView extends StatefulWidget {
   @override
   _userView createState() => _userView();
@@ -33,7 +35,6 @@ class _userView extends State<userView> {
   bool _showErrorEmail = false;
   bool _showErrorPassword = false;
 
-  String _id = '';
   String _name = '';
   String _lastName = '';
   String _age = '';
@@ -50,7 +51,6 @@ class _userView extends State<userView> {
     emailController.clear();
     passwordController.clear();
 
-    _id = '';
     _name = '';
     _lastName = '';
     _age = '';
@@ -69,8 +69,8 @@ class _userView extends State<userView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: CustomAppBar(
-          title: 'App ',
+        appBar: const CustomAppBar(
+          title: 'User ',
         ),
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -98,19 +98,6 @@ class _userView extends State<userView> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            CustomTextField(
-                              controller: idController,
-                              label: 'id',
-                              keyboardType: TextInputType.number,
-                              inputFormatters: <TextInputFormatter>[
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
-                              onChanged: (value) {
-                                setState(() {
-                                  _id = value;
-                                });
-                              },
-                            ),
                             const SizedBox(height: 20),
                             CustomTextField(
                               controller: nameController,
@@ -199,7 +186,7 @@ class _userView extends State<userView> {
                           ],
                         ),
                       ),
-                      ElevatedButton(
+                      GradientButton(
                         onPressed: () {
                           setState(() {
                             _showErrorId = false;
@@ -210,9 +197,7 @@ class _userView extends State<userView> {
                             _showErrorEmail = false;
                             _showErrorPassword = false;
                             // Validar cada campo individualmente para mostrar la alerta una por una
-                            if (_validar(_id)) {
-                              _showErrorId = true;
-                            } else if (_validar(_name)) {
+                            if (_validar(_name)) {
                               _showErrorName = true;
                             } else if (_validar(_lastName)) {
                               _showErrorLastName = true;
@@ -228,7 +213,6 @@ class _userView extends State<userView> {
                               // El formulario es válido, envía los datos
                               try {
                                 addUser({
-                                  "id": _id,
                                   "name": _name,
                                   "lastName": _lastName,
                                   "age": _age,
@@ -241,7 +225,7 @@ class _userView extends State<userView> {
                             }
                           });
                         },
-                        child: const Text('Guardar'),
+                        text: 'Guardar',
                       ),
                       const SizedBox(height: 15),
                       Visibility(

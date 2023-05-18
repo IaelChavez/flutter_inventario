@@ -5,14 +5,15 @@ import 'package:practica_inventario/widgets/widgets.dart';
 
 import 'package:practica_inventario/widgets/detail.dart';
 
-class UserList<T> extends StatelessWidget {
+class Lista<T> extends StatelessWidget {
   final List<T> items;
   final IconData leadingIcon;
   final String base;
   final Widget Function(T) itemBuilder;
   final String Function(T) idItem;
+  final builderFromSnapshot;
 
-  UserList({required this.items, required this.leadingIcon, required this.base, required this.itemBuilder, required this.idItem});
+  Lista({required this.items, required this.leadingIcon, required this.base, required this.itemBuilder, required this.idItem, required this.builderFromSnapshot});
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +79,7 @@ class UserList<T> extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => UserDetail(documentId: idItem(item), base: base, builderFromSnapshot: userFromDocumentSnapshot,),
+                              builder: (context) => UserDetail(documentId: idItem(item), base: base, builderFromSnapshot: builderFromSnapshot,),
                             ),
                           );
                         }),
