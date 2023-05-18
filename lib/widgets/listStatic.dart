@@ -1,6 +1,11 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
+import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:practica_inventario/Model/userModel.dart';
+import 'package:practica_inventario/screens/screens.dart';
 import 'package:practica_inventario/widgets/widgets.dart';
 
 import 'package:practica_inventario/widgets/detail.dart';
@@ -12,8 +17,9 @@ class Lista<T> extends StatelessWidget {
   final Widget Function(T) itemBuilder;
   final String Function(T) idItem;
   final builderFromSnapshot;
+  final Widget Function(String, String) updatePoint;
 
-  Lista({required this.items, required this.leadingIcon, required this.base, required this.itemBuilder, required this.idItem, required this.builderFromSnapshot});
+  Lista({required this.items, required this.leadingIcon, required this.base, required this.itemBuilder, required this.idItem, required this.builderFromSnapshot, required this.updatePoint});
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +71,14 @@ class Lista<T> extends StatelessWidget {
                           IconButton(
                             icon: const Icon(Icons.edit),
                             onPressed: () {
-                              _updateUser(context, idItem(item), base);
+                              if (updatePoint != null) {
+                                Widget instance = updatePoint(idItem(item), base);
+
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => instance),
+                                );
+                              }
                             },
                           ),
                           IconButton(
@@ -79,7 +92,11 @@ class Lista<T> extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => UserDetail(documentId: idItem(item), base: base, builderFromSnapshot: builderFromSnapshot,),
+                              builder: (context) => UserDetail(
+                                documentId: idItem(item), 
+                                base: base, 
+                                builderFromSnapshot: builderFromSnapshot
+                              ),
                             ),
                           );
                         }),

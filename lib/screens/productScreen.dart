@@ -7,8 +7,17 @@ import '../firebase/firebase_product.dart';
 import '../widgets/button.dart';
 
 class ProductView extends StatefulWidget {
+  String? documentId;
+  String? base;
+
+  ProductView({super.key, this.documentId, this.base});
+  
   @override
   _ProductView createState() => _ProductView();
+}
+
+Widget ProductViewFactory(String id, String base) {
+  return ProductView(documentId: id, base: base);
 }
 
 class _ProductView extends State<ProductView> {

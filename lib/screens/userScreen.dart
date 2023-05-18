@@ -7,8 +7,17 @@ import 'package:practica_inventario/widgets/textField.dart';
 import '../widgets/button.dart';
 
 class userView extends StatefulWidget {
+  String? documentId;
+  String? base;
+
+  userView({super.key, this.documentId, this.base});
+
   @override
   _userView createState() => _userView();
+}
+
+Widget UserViewFactory(String id, String base) {
+  return userView(documentId: id, base: base);
 }
 
 class _userView extends State<userView> {
@@ -184,6 +193,15 @@ class _userView extends State<userView> {
                             ),
                             const SizedBox(height: 20),
                           ],
+                        ),
+                      ),
+                      Visibility(
+                        visible: widget.documentId != null,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // Acción cuando se presione el botón
+                          },
+                          child: Text('Enviar'),
                         ),
                       ),
                       GradientButton(

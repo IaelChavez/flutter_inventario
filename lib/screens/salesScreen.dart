@@ -7,8 +7,17 @@ import '../widgets/button.dart';
 import '../widgets/textField.dart';
 
 class SalesScreen extends StatefulWidget {
+  String? documentId;
+  String? base;
+
+  SalesScreen({super.key, this.documentId, this.base});
+  
   @override
   _SalesScreen createState() => _SalesScreen();
+}
+
+Widget SalesViewFactory(String id, String base) {
+  return SalesScreen(documentId: id, base: base);
 }
 
 class _SalesScreen extends State<SalesScreen> {

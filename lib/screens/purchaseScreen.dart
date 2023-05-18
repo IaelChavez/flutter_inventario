@@ -7,8 +7,17 @@ import '../widgets/button.dart';
 import '../widgets/textField.dart';
 
 class PurchaseScreen extends StatefulWidget {
+  String? documentId;
+  String? base;
+
+  PurchaseScreen({super.key, this.documentId, this.base});
+
   @override
   _PurchaseScreen createState() => _PurchaseScreen();
+}
+
+Widget PurchasesViewFactory(String id, String base) {
+  return PurchaseScreen(documentId: id, base: base);
 }
 
 class _PurchaseScreen extends State<PurchaseScreen> {

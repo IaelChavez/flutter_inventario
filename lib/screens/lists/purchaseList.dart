@@ -4,7 +4,7 @@ import 'package:practica_inventario/firebase/firebase_purchase.dart';
 import 'package:practica_inventario/firebase/firebase_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:practica_inventario/Model/userModel.dart';
-import 'package:practica_inventario/screens/purchaseScreen.dart';
+import 'package:practica_inventario/screens/screens.dart';
 import 'package:practica_inventario/widgets/listStatic.dart';
 import 'package:practica_inventario/widgets/widgets.dart';
 
@@ -48,6 +48,7 @@ class PurchaseList extends StatelessWidget {
               itemBuilder: (purchase) => Text(purchase.name),
               idItem: (purchase) => purchase.id,
               builderFromSnapshot: purchaseFromDocumentSnapshot,
+              updatePoint: UserViewFactory,
               );
           }
         },

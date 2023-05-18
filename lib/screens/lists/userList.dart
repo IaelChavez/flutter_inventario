@@ -45,6 +45,7 @@ class UsersList extends StatelessWidget {
               itemBuilder: (user) => Text('${user.name} ${user.lastName}'),
               idItem: (user) => user.id,
               builderFromSnapshot: userFromDocumentSnapshot,
+              updatePoint: UserViewFactory,
             );
           }
         },
@@ -52,3 +53,4 @@ class UsersList extends StatelessWidget {
     );
   }
 }
+
