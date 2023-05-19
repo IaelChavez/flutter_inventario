@@ -3,8 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../Model/UserModel.dart';
 import 'firebase_services.dart';
 
-Future<void> addUser(Map<String, dynamic> data) async {
-  await db.collection('users').add(data);
+Future<void> updatedUser(Map<String, dynamic> data, documentId) async {
+  await db.collection('users').doc(documentId).update(data);
 }
 
 Future<List<User>>? getUsers() async {

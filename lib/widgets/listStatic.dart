@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
-import 'dart:html';
+//import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,14 @@ class Lista<T> extends StatelessWidget {
   final builderFromSnapshot;
   final Widget Function(String, String) updatePoint;
 
-  Lista({required this.items, required this.leadingIcon, required this.base, required this.itemBuilder, required this.idItem, required this.builderFromSnapshot, required this.updatePoint});
+  Lista(
+      {required this.items,
+      required this.leadingIcon,
+      required this.base,
+      required this.itemBuilder,
+      required this.idItem,
+      required this.builderFromSnapshot,
+      required this.updatePoint});
 
   @override
   Widget build(BuildContext context) {
@@ -72,11 +79,13 @@ class Lista<T> extends StatelessWidget {
                             icon: const Icon(Icons.edit),
                             onPressed: () {
                               if (updatePoint != null) {
-                                Widget instance = updatePoint(idItem(item), base);
+                                Widget instance =
+                                    updatePoint(idItem(item), base);
 
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => instance),
+                                  MaterialPageRoute(
+                                      builder: (context) => instance),
                                 );
                               }
                             },
@@ -93,10 +102,9 @@ class Lista<T> extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => UserDetail(
-                                documentId: idItem(item), 
-                                base: base, 
-                                builderFromSnapshot: builderFromSnapshot
-                              ),
+                                  documentId: idItem(item),
+                                  base: base,
+                                  builderFromSnapshot: builderFromSnapshot),
                             ),
                           );
                         }),
@@ -113,10 +121,7 @@ class Lista<T> extends StatelessWidget {
 
 void _deleteUser(BuildContext context, String documentId, String base) async {
   try {
-    await FirebaseFirestore.instance
-        .collection(base)
-        .doc(documentId)
-        .delete();
+    await FirebaseFirestore.instance.collection(base).doc(documentId).delete();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Eliminado correctamente')),
     );
@@ -129,10 +134,7 @@ void _deleteUser(BuildContext context, String documentId, String base) async {
 
 void _updateUser(BuildContext context, String documentId, String base) async {
   try {
-    await FirebaseFirestore.instance
-        .collection(base)
-        .doc(documentId)
-        .delete();
+    await FirebaseFirestore.instance.collection(base).doc(documentId).delete();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Eliminado correctamente')),
     );
