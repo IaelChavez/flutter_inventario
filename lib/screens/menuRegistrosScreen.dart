@@ -9,11 +9,13 @@ class MenuRegistrosScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(
-        title: 'Register ',
-      ),
+        appBar: AppBar(
+          title: const Text('Register'),
+          backgroundColor: Color.fromRGBO(16,44,68, 1),
+        ),
       body: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Card(
               child: GestureDetector(
@@ -25,6 +27,7 @@ class MenuRegistrosScreen extends StatelessWidget {
               leading: Icon(
                 Icons.person_add,
                 size: 30,
+                color: Colors.orange
               ),
               title: Text("Users", style: TextStyle(fontSize: 20.0)),
             ),
@@ -39,12 +42,14 @@ class MenuRegistrosScreen extends StatelessWidget {
               leading: Icon(
                 Icons.add_to_photos_sharp,
                 size: 30,
+                 color: Colors.blue
               ),
               title: Text("Products", style: TextStyle(fontSize: 20.0)),
             ),
           )),
         ],
       )),
+      backgroundColor: Color.fromRGBO(161,32,67,0.822),
     );
   }
 }

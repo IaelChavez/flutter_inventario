@@ -78,8 +78,9 @@ class _userView extends State<userView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const CustomAppBar(
-          title: 'User ',
+        appBar: AppBar(
+          title: const Text('User Registration'),
+          backgroundColor: Color.fromRGBO(16,44,68, 1),
         ),
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -94,7 +95,7 @@ class _userView extends State<userView> {
             body: SingleChildScrollView(
               child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.8),
+                    color: Color.fromRGBO(161, 148, 148, 1),
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   margin: const EdgeInsets.symmetric(
