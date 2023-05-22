@@ -48,7 +48,7 @@ class ProductList extends StatelessWidget {
               itemBuilder: (product) => Text(product.name),
               idItem: (product) => product.id,
               builderFromSnapshot: productFromDocumentSnapshot,
-              updatePoint: UserViewFactory,
+              updatePoint: ProductViewFactory,
               );
           }
         },

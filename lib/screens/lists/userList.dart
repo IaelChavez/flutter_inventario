@@ -39,7 +39,7 @@ class UsersList extends StatelessWidget {
               items: users,
               leadingIcon: Icons.person,
               base: 'users',
-              itemBuilder: (user) => Text('${user.name} ${user.lastName}'),
+              itemBuilder: (user) => Text(user.name),
               idItem: (user) => user.id,
               builderFromSnapshot: userFromDocumentSnapshot,
               updatePoint: UserViewFactory,

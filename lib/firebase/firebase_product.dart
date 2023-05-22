@@ -7,6 +7,10 @@ Future<void> addProduct(Map<String, dynamic> data) async {
   await db.collection('products').add(data);
 }
 
+Future<void> updateProducts(Map<String, dynamic> data, documentId) async {
+  await db.collection('products').doc(documentId).update(data);
+}
+
 Future<List<Product>> getProducts() async {
   List<Product> purchases = [];
   QuerySnapshot<Map<String, dynamic>> querySnapshot =
