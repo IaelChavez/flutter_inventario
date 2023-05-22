@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:practica_inventario/screens/registerUserScreen.dart';
 import 'package:practica_inventario/screens/screens.dart';
 
 import '../widgets/appbar.dart';
@@ -77,7 +78,7 @@ class LoginScreen extends StatelessWidget {
               onPressed: () {
                 //  ToDo: Aquí va la lógica para validar los datos de inicio de sesión
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => userView()));
+                    MaterialPageRoute(builder: (context) => RegisterUserView()));
               },
               text: 'Registrarse',
             ),

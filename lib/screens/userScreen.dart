@@ -1,16 +1,31 @@
+import 'dart:html';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:practica_inventario/firebase/firebase_services.dart';
+import 'package:practica_inventario/firebase/firebase_user.dart';
 import 'package:practica_inventario/widgets/appbar.dart';
 import 'package:practica_inventario/widgets/textField.dart';
 
+import '../Model/UserModel.dart';
+import '../controllers/dataItem.dart';
+import '../firebase/firebase_services.dart';
 import '../widgets/button.dart';
+import 'screens.dart';
 
 class userView extends StatefulWidget {
   String? documentId;
   String? base;
 
-  userView({super.key, this.documentId, this.base});
+  userView({this.documentId, this.base});
+
+  factory userView.withParams(String documentId, String base) {
+    return userView(documentId: documentId, base: base);
+  }
+
+  factory userView.withoutParams() {
+    return userView();
+  }
 
   @override
   _userView createState() => _userView();
@@ -21,6 +36,7 @@ Widget UserViewFactory(String id, String base) {
 }
 
 class _userView extends State<userView> {
+  late Object item;
   _userView({Key? key}) : super();
 
   final _formKey = GlobalKey<FormState>();
@@ -77,208 +93,441 @@ class _userView extends State<userView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('User Registration'),
-          backgroundColor: Color.fromRGBO(16,44,68, 1),
-        ),
-        body: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/fondo.jpg'),
-              fit: BoxFit.cover,
-            ),
+
+    nameController.addListener(() {
+      _name = nameController.text;
+    });
+    lastNameController.addListener(() {
+      _lastName = lastNameController.text;
+    });
+    ageController.addListener(() {
+      _age = ageController.text;
+    });
+    genderController.addListener(() {
+      _gender = genderController.text;
+    });
+    emailController.addListener(() {
+      _email = emailController.text;
+    });
+    passwordController.addListener(() {
+      _password = passwordController.text;
+    });
+
+    if (widget.documentId != null) {
+      return Scaffold(
+          appBar: const CustomAppBar(
+            title: 'User ',
           ),
-          child: Scaffold(
-            backgroundColor: Colors.transparent,
-            body: SingleChildScrollView(
-              child: Container(
-                  decoration: BoxDecoration(
-                    color: Color.fromRGBO(161, 148, 148, 1),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  margin: const EdgeInsets.symmetric(
-                      vertical: 50.0, horizontal: 20.0),
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    children: [
-                      Form(
-                        key: _formKey,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const SizedBox(height: 20),
-                            CustomTextField(
-                              controller: nameController,
-                              label: 'nombre',
-                              keyboardType: TextInputType.text,
-                              inputFormatters: <TextInputFormatter>[
-                                FilteringTextInputFormatter.allow(
-                                    RegExp('[a-zA-Z]'))
-                              ],
-                              onChanged: (value) {
-                                setState(() {
-                                  _name = value;
-                                });
-                              },
-                            ),
-                            const SizedBox(height: 20),
-                            CustomTextField(
-                              controller: lastNameController,
-                              label: 'apellido',
-                              keyboardType: TextInputType.text,
-                              inputFormatters: <TextInputFormatter>[
-                                FilteringTextInputFormatter.allow(
-                                    RegExp('[a-zA-Z]'))
-                              ],
-                              onChanged: (value) {
-                                setState(() {
-                                  _lastName = value;
-                                });
-                              },
-                            ),
-                            const SizedBox(height: 20),
-                            CustomTextField(
-                              controller: ageController,
-                              label: 'edad',
-                              keyboardType: TextInputType.number,
-                              inputFormatters: <TextInputFormatter>[
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
-                              onChanged: (value) {
-                                setState(() {
-                                  _age = value;
-                                });
-                              },
-                            ),
-                            const SizedBox(height: 20),
-                            CustomTextField(
-                              controller: genderController,
-                              label: 'genero',
-                              keyboardType: TextInputType.text,
-                              inputFormatters: <TextInputFormatter>[
-                                FilteringTextInputFormatter.allow(
-                                    RegExp('[a-zA-Z]'))
-                              ],
-                              onChanged: (value) {
-                                setState(() {
-                                  _gender = value;
-                                });
-                              },
-                            ),
-                            const SizedBox(height: 20),
-                            CustomTextField(
-                              controller: emailController,
-                              label: 'correo',
-                              keyboardType: TextInputType.emailAddress,
-                              inputFormatters: <TextInputFormatter>[
-                                FilteringTextInputFormatter.singleLineFormatter,
-                              ],
-                              onChanged: (value) {
-                                setState(() {
-                                  _email = value;
-                                });
-                              },
-                            ),
-                            const SizedBox(height: 20),
-                            CustomTextField(
-                              controller: passwordController,
-                              label: 'contraseña',
-                              obscureText: true,
-                              onChanged: (value) {
-                                setState(() {
-                                  _password = value;
-                                });
-                              },
-                            ),
-                            const SizedBox(height: 20),
-                          ],
+          body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>?>(
+              future: getDataFirebase(widget.documentId!, widget.base!),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error: ${snapshot.error}'),
+                  );
+                } else {
+                  if (snapshot.hasData) {
+                    DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
+                        snapshot.data!;
+
+                    User uuser = User.fromDocumentSnapshot(documentSnapshot);
+
+                    nameController.text = uuser.name;
+                    lastNameController.text = uuser.lastName;
+                    ageController.text = uuser.age;
+                    genderController.text = uuser.gender;
+                    emailController.text = uuser.email;
+                    passwordController.text = uuser.password;
+                  }
+                  return Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/images/fondo.jpg'),
+                          fit: BoxFit.cover,
                         ),
                       ),
-                      Visibility(
-                        visible: widget.documentId != null,
-                        child: ElevatedButton(
+                      child: Scaffold(
+                        backgroundColor: Colors.transparent,
+                        body: SingleChildScrollView(
+                          child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.8),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 50.0, horizontal: 20.0),
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                children: [
+                                  Form(
+                                    key: _formKey,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const SizedBox(height: 20),
+                                        CustomTextField(
+                                          controller: nameController,
+                                          label: 'nombre',
+                                          keyboardType: TextInputType.text,
+                                          inputFormatters: <TextInputFormatter>[
+                                            FilteringTextInputFormatter.allow(
+                                                RegExp('[a-zA-Z]'))
+                                          ],
+                                          onChanged: (value) {},
+                                        ),
+                                        const SizedBox(height: 20),
+                                        CustomTextField(
+                                          controller: lastNameController,
+                                          label: 'apellido',
+                                          keyboardType: TextInputType.text,
+                                          inputFormatters: <TextInputFormatter>[
+                                            FilteringTextInputFormatter.allow(
+                                                RegExp('[a-zA-Z]'))
+                                          ],
+                                          onChanged: (value) {},
+                                        ),
+                                        const SizedBox(height: 20),
+                                        CustomTextField(
+                                          controller: ageController,
+                                          label: 'edad',
+                                          keyboardType: TextInputType.number,
+                                          inputFormatters: <TextInputFormatter>[
+                                            FilteringTextInputFormatter
+                                                .digitsOnly
+                                          ],
+                                          onChanged: (value) {},
+                                        ),
+                                        const SizedBox(height: 20),
+                                        CustomTextField(
+                                          controller: genderController,
+                                          label: 'genero',
+                                          keyboardType: TextInputType.text,
+                                          inputFormatters: <TextInputFormatter>[
+                                            FilteringTextInputFormatter.allow(
+                                                RegExp('[a-zA-Z]'))
+                                          ],
+                                          onChanged: (value) {},
+                                        ),
+                                        const SizedBox(height: 20),
+                                        CustomTextField(
+                                          controller: emailController,
+                                          label: 'correo',
+                                          keyboardType:
+                                              TextInputType.emailAddress,
+                                          inputFormatters: <TextInputFormatter>[
+                                            FilteringTextInputFormatter
+                                                .singleLineFormatter,
+                                          ],
+                                          onChanged: (value) {},
+                                        ),
+                                        const SizedBox(height: 20),
+                                        CustomTextField(
+                                          controller: passwordController,
+                                          label: 'contraseña',
+                                          obscureText: true,
+                                          onChanged: (value) {},
+                                        ),
+                                        const SizedBox(height: 20),
+                                      ],
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: widget.documentId != null,
+                                    child: GradientButton(
+                                      onPressed: () {
+                                        // Acción cuando se presione el botón
+                                        updatedUser({
+                                          "name": _name,
+                                          "lastName": _lastName,
+                                          "age": _age,
+                                          "gender": _gender,
+                                          "email": _email,
+                                          "password": _password,
+                                        }, widget.documentId!);
+                                      },
+                                      text: 'Actualizar',
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: widget.documentId == null,
+                                    child: GradientButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          _showErrorId = false;
+                                          _showErrorName = false;
+                                          _showErrorLastName = false;
+                                          _showErrorAge = false;
+                                          _showErrorGender = false;
+                                          _showErrorEmail = false;
+                                          _showErrorPassword = false;
+                                          // Validar cada campo individualmente para mostrar la alerta una por una
+                                          if (_validar(_name)) {
+                                            _showErrorName = true;
+                                          } else if (_validar(_lastName)) {
+                                            _showErrorLastName = true;
+                                          } else if (_validar(_age)) {
+                                            _showErrorAge = true;
+                                          } else if (_validar(_gender)) {
+                                            _showErrorGender = true;
+                                          } else if (_validar(_email)) {
+                                            _showErrorEmail = true;
+                                          } else if (_validar(_password)) {
+                                            _showErrorPassword = true;
+                                          } else {
+                                            // El formulario es válido, envía los datos
+                                            try {
+                                              addUser({
+                                                "name": _name,
+                                                "lastName": _lastName,
+                                                "age": _age,
+                                                "gender": _gender,
+                                                "email": _email,
+                                                "password": _password,
+                                              });
+                                              vaciarCampos();
+                                            } catch (e) {}
+                                          }
+                                        });
+                                      },
+                                      text: 'Guardar',
+                                    ),
+                                  ),
+                                  const SizedBox(height: 15),
+                                  Visibility(
+                                    visible: _showErrorId,
+                                    child: const Text('Rellena el id.'),
+                                  ),
+                                  Visibility(
+                                    visible: _showErrorName,
+                                    child: const Text('Rellena el nombre.'),
+                                  ),
+                                  Visibility(
+                                    visible: _showErrorLastName,
+                                    child: const Text('Rellena el apellido.'),
+                                  ),
+                                  Visibility(
+                                    visible: _showErrorAge,
+                                    child: const Text('Rellena la edad.'),
+                                  ),
+                                  Visibility(
+                                    visible: _showErrorGender,
+                                    child: const Text('Rellena el genero.'),
+                                  ),
+                                  Visibility(
+                                    visible: _showErrorEmail,
+                                    child: const Text('Rellena el correo.'),
+                                  ),
+                                  Visibility(
+                                    visible: _showErrorPassword,
+                                    child: const Text('Rellena la contraseña.'),
+                                  ),
+                                ],
+                              )),
+                        ),
+                      ));
+                }
+              }));
+    } else {
+      return Scaffold(
+          appBar: const CustomAppBar(
+            title: 'User ',
+          ),
+          body: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/fondo.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Scaffold(
+              backgroundColor: Colors.transparent,
+              body: SingleChildScrollView(
+                child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.8),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 50.0, horizontal: 20.0),
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      children: [
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const SizedBox(height: 20),
+                              CustomTextField(
+                                controller: nameController,
+                                label: 'nombre',
+                                keyboardType: TextInputType.text,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp('[a-zA-Z]'))
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    _name = value;
+                                  });
+                                },
+                              ),
+                              const SizedBox(height: 20),
+                              CustomTextField(
+                                controller: lastNameController,
+                                label: 'apellido',
+                                keyboardType: TextInputType.text,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp('[a-zA-Z]'))
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    _lastName = value;
+                                  });
+                                },
+                              ),
+                              const SizedBox(height: 20),
+                              CustomTextField(
+                                controller: ageController,
+                                label: 'edad',
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    _age = value;
+                                  });
+                                },
+                              ),
+                              const SizedBox(height: 20),
+                              CustomTextField(
+                                controller: genderController,
+                                label: 'genero',
+                                keyboardType: TextInputType.text,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp('[a-zA-Z]'))
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    _gender = value;
+                                  });
+                                },
+                              ),
+                              const SizedBox(height: 20),
+                              CustomTextField(
+                                controller: emailController,
+                                label: 'correo',
+                                keyboardType: TextInputType.emailAddress,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter
+                                      .singleLineFormatter,
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    _email = value;
+                                  });
+                                },
+                              ),
+                              const SizedBox(height: 20),
+                              CustomTextField(
+                                controller: passwordController,
+                                label: 'contraseña',
+                                obscureText: true,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _password = value;
+                                  });
+                                },
+                              ),
+                              const SizedBox(height: 20),
+                            ],
+                          ),
+                        ),
+                        GradientButton(
                           onPressed: () {
-                            // Acción cuando se presione el botón
+                            setState(() {
+                              _showErrorId = false;
+                              _showErrorName = false;
+                              _showErrorLastName = false;
+                              _showErrorAge = false;
+                              _showErrorGender = false;
+                              _showErrorEmail = false;
+                              _showErrorPassword = false;
+                              // Validar cada campo individualmente para mostrar la alerta una por una
+                              if (_validar(_name)) {
+                                _showErrorName = true;
+                              } else if (_validar(_lastName)) {
+                                _showErrorLastName = true;
+                              } else if (_validar(_age)) {
+                                _showErrorAge = true;
+                              } else if (_validar(_gender)) {
+                                _showErrorGender = true;
+                              } else if (_validar(_email)) {
+                                _showErrorEmail = true;
+                              } else if (_validar(_password)) {
+                                _showErrorPassword = true;
+                              } else {
+                                // El formulario es válido, envía los datos
+                                try {
+                                  addUser({
+                                    "name": _name,
+                                    "lastName": _lastName,
+                                    "age": _age,
+                                    "gender": _gender,
+                                    "email": _email,
+                                    "password": _password,
+                                  });
+                                  vaciarCampos();
+                                } catch (e) {}
+                              }
+                            });
                           },
-                          child: Text('Enviar'),
+                          text: 'Guardar',
                         ),
-                      ),
-                      GradientButton(
-                        onPressed: () {
-                          setState(() {
-                            _showErrorId = false;
-                            _showErrorName = false;
-                            _showErrorLastName = false;
-                            _showErrorAge = false;
-                            _showErrorGender = false;
-                            _showErrorEmail = false;
-                            _showErrorPassword = false;
-                            // Validar cada campo individualmente para mostrar la alerta una por una
-                            if (_validar(_name)) {
-                              _showErrorName = true;
-                            } else if (_validar(_lastName)) {
-                              _showErrorLastName = true;
-                            } else if (_validar(_age)) {
-                              _showErrorAge = true;
-                            } else if (_validar(_gender)) {
-                              _showErrorGender = true;
-                            } else if (_validar(_email)) {
-                              _showErrorEmail = true;
-                            } else if (_validar(_password)) {
-                              _showErrorPassword = true;
-                            } else {
-                              // El formulario es válido, envía los datos
-                              try {
-                                addUser({
-                                  "name": _name,
-                                  "lastName": _lastName,
-                                  "age": _age,
-                                  "gender": _gender,
-                                  "email": _email,
-                                  "password": _password,
-                                });
-                                vaciarCampos();
-                              } catch (e) {}
-                            }
-                          });
-                        },
-                        text: 'Guardar',
-                      ),
-                      const SizedBox(height: 15),
-                      Visibility(
-                        visible: _showErrorId,
-                        child: const Text('Rellena el id.'),
-                      ),
-                      Visibility(
-                        visible: _showErrorName,
-                        child: const Text('Rellena el nombre.'),
-                      ),
-                      Visibility(
-                        visible: _showErrorLastName,
-                        child: const Text('Rellena el apellido.'),
-                      ),
-                      Visibility(
-                        visible: _showErrorAge,
-                        child: const Text('Rellena la edad.'),
-                      ),
-                      Visibility(
-                        visible: _showErrorGender,
-                        child: const Text('Rellena el genero.'),
-                      ),
-                      Visibility(
-                        visible: _showErrorEmail,
-                        child: const Text('Rellena el correo.'),
-                      ),
-                      Visibility(
-                        visible: _showErrorPassword,
-                        child: const Text('Rellena la contraseña.'),
-                      ),
-                    ],
-                  )),
+                        const SizedBox(height: 15),
+                        Visibility(
+                          visible: _showErrorId,
+                          child: const Text('Rellena el id.'),
+                        ),
+                        Visibility(
+                          visible: _showErrorName,
+                          child: const Text('Rellena el nombre.'),
+                        ),
+                        Visibility(
+                          visible: _showErrorLastName,
+                          child: const Text('Rellena el apellido.'),
+                        ),
+                        Visibility(
+                          visible: _showErrorAge,
+                          child: const Text('Rellena la edad.'),
+                        ),
+                        Visibility(
+                          visible: _showErrorGender,
+                          child: const Text('Rellena el genero.'),
+                        ),
+                        Visibility(
+                          visible: _showErrorEmail,
+                          child: const Text('Rellena el correo.'),
+                        ),
+                        Visibility(
+                          visible: _showErrorPassword,
+                          child: const Text('Rellena la contraseña.'),
+                        ),
+                      ],
+                    )),
+              ),
             ),
-          ),
-        ));
+          ));
+    }
   }
 }
