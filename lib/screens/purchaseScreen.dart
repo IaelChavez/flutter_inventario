@@ -9,6 +9,7 @@ import '../firebase/firebase_user.dart';
 import '../widgets/appbar.dart';
 import '../widgets/button.dart';
 import '../widgets/textField.dart';
+import 'lists/lists.dart';
 
 class PurchaseScreen extends StatefulWidget {
   String? documentId;
@@ -271,6 +272,19 @@ class _PurchaseScreen extends State<PurchaseScreen> {
                                         'total': _total,
                                       });
                                       vaciarCampos();
+                                      Navigator.pop(context);
+                                      Navigator.pop(context);
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const PurchaseList()));
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                            content: Text(
+                                                'Compra agregada correctamente')),
+                                      );
                                     } catch (e) {}
                                   }
                                 });
@@ -476,61 +490,73 @@ class _PurchaseScreen extends State<PurchaseScreen> {
                                           'subtotal': _subtotal,
                                           'total': _total,
                                         }, widget.documentId!);
+                                        Navigator.pop(context);
+                                        Navigator.pop(context);
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const PurchaseList()));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                              content: Text(
+                                                  'Compra actualizada correctamente')),
+                                        );
                                       },
                                       text: 'Actualizar',
                                     ),
                                   ),
                                   Visibility(
                                     visible: widget.documentId == null,
-                                    child:
-                                  GradientButton(
-                                    text: 'Guardar',
-                                    onPressed: () {
-                                      setState(() {
-                                        _showErrorIdProduct = false;
-                                        _showErrorName = false;
-                                        _showErrorCant = false;
-                                        _showErrorIdV = false;
-                                        _showErrorIdC = false;
-                                        _showErrorPieces = false;
-                                        _showErrorSubtotal = false;
-                                        _showErrorTotal = false;
-                                        // Validar cada campo individualmente para mostrar la alerta una por una
-                                        if (_validar(_idProduct)) {
-                                          _showErrorIdProduct = true;
-                                        } else if (_validar(_name)) {
-                                          _showErrorName = true;
-                                        } else if (_validar(_cant)) {
-                                          _showErrorCant = true;
-                                        } else if (_validar(_idV)) {
-                                          _showErrorIdV = true;
-                                        } else if (_validar(_idC)) {
-                                          _showErrorIdC = true;
-                                        } else if (_validar(_pieces)) {
-                                          _showErrorPieces = true;
-                                        } else if (_validar(_subtotal)) {
-                                          _showErrorSubtotal = true;
-                                        } else if (_validar(_total)) {
-                                          _showErrorTotal = true;
-                                        } else {
-                                          // El formulario es válido, envía los datos
-                                          try {
-                                            addPurchase({
-                                              'idProduct': _idProduct,
-                                              'name': _name,
-                                              'cant': _cant,
-                                              'idV': _idV,
-                                              'idC': _idC,
-                                              'pieces': _pieces,
-                                              'subtotal': _subtotal,
-                                              'total': _total,
-                                            });
-                                            vaciarCampos();
-                                          } catch (e) {}
-                                        }
-                                      });
-                                    },
-                                  ),
+                                    child: GradientButton(
+                                      text: 'Guardar',
+                                      onPressed: () {
+                                        setState(() {
+                                          _showErrorIdProduct = false;
+                                          _showErrorName = false;
+                                          _showErrorCant = false;
+                                          _showErrorIdV = false;
+                                          _showErrorIdC = false;
+                                          _showErrorPieces = false;
+                                          _showErrorSubtotal = false;
+                                          _showErrorTotal = false;
+                                          // Validar cada campo individualmente para mostrar la alerta una por una
+                                          if (_validar(_idProduct)) {
+                                            _showErrorIdProduct = true;
+                                          } else if (_validar(_name)) {
+                                            _showErrorName = true;
+                                          } else if (_validar(_cant)) {
+                                            _showErrorCant = true;
+                                          } else if (_validar(_idV)) {
+                                            _showErrorIdV = true;
+                                          } else if (_validar(_idC)) {
+                                            _showErrorIdC = true;
+                                          } else if (_validar(_pieces)) {
+                                            _showErrorPieces = true;
+                                          } else if (_validar(_subtotal)) {
+                                            _showErrorSubtotal = true;
+                                          } else if (_validar(_total)) {
+                                            _showErrorTotal = true;
+                                          } else {
+                                            // El formulario es válido, envía los datos
+                                            try {
+                                              addPurchase({
+                                                'idProduct': _idProduct,
+                                                'name': _name,
+                                                'cant': _cant,
+                                                'idV': _idV,
+                                                'idC': _idC,
+                                                'pieces': _pieces,
+                                                'subtotal': _subtotal,
+                                                'total': _total,
+                                              });
+                                              vaciarCampos();
+                                            } catch (e) {}
+                                          }
+                                        });
+                                      },
+                                    ),
                                   ),
                                   const SizedBox(height: 15),
                                   Visibility(

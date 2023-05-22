@@ -8,6 +8,7 @@ import '../Model/models.dart';
 import '../firebase/firebase_product.dart';
 import '../firebase/firebase_services.dart';
 import '../widgets/button.dart';
+import 'lists/lists.dart';
 
 class ProductView extends StatefulWidget {
   String? documentId;
@@ -269,6 +270,19 @@ class _ProductView extends State<ProductView> {
                                           'utility': _utility,
                                         });
                                         vaciarCampos();
+                                        Navigator.pop(context);
+                                        Navigator.pop(context);
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const ProductList()));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                              content: Text(
+                                                  'Producto agregado correctamente')),
+                                        );
                                       } catch (e) {}
                                     }
                                   });
@@ -391,8 +405,7 @@ class _ProductView extends State<ProductView> {
                                               FilteringTextInputFormatter
                                                   .digitsOnly
                                             ],
-                                            onChanged: (value) {
-                                            },
+                                            onChanged: (value) {},
                                           ),
                                           const SizedBox(height: 20),
                                           CustomTextField(
@@ -447,6 +460,19 @@ class _ProductView extends State<ProductView> {
                                             'price': _price,
                                             'utility': _utility,
                                           }, widget.documentId!);
+                                          Navigator.pop(context);
+                                          Navigator.pop(context);
+                                          Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const ProductList()));
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                                content:
+                                                    Text('Producto actualizado correctamente')),
+                                          );
                                         },
                                         text: 'Actualizar',
                                       ),

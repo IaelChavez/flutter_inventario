@@ -8,6 +8,7 @@ import '../firebase/firebase_services.dart';
 import '../widgets/appbar.dart';
 import '../widgets/button.dart';
 import '../widgets/textField.dart';
+import 'lists/lists.dart';
 
 class SalesScreen extends StatefulWidget {
   String? documentId;
@@ -181,6 +182,19 @@ class _SalesScreen extends State<SalesScreen> {
                                         'IdA': _idA,
                                       });
                                       vaciarCampos();
+                                      Navigator.pop(context);
+                                      Navigator.pop(context);
+                                      Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const SaleList()));
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                            content: Text(
+                                                'Venta agregada correctamente')),
+                                      );
                                     } catch (e) {}
                                   }
                                 });
@@ -301,18 +315,31 @@ class _SalesScreen extends State<SalesScreen> {
                                 ),
                                 Visibility(
                                   visible: widget.documentId != null,
-                                    child: GradientButton(
-                                      onPressed: () {
-                                        // Acción cuando se presione el botón
-                                        updateSales({
-                                          'idProduct': _idProduct,
-                                              'name': _name,
-                                              'pieces': _pieces,
-                                              'IdA': _idA,
-                                        }, widget.documentId!);
-                                      },
-                                      text: 'Actualizar',
-                                    ),
+                                  child: GradientButton(
+                                    onPressed: () {
+                                      // Acción cuando se presione el botón
+                                      updateSales({
+                                        'idProduct': _idProduct,
+                                        'name': _name,
+                                        'pieces': _pieces,
+                                        'IdA': _idA,
+                                      }, widget.documentId!);
+                                      Navigator.pop(context);
+                                      Navigator.pop(context);
+                                      Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const SaleList()));
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                            content: Text(
+                                                'Venta actualizada correctamente')),
+                                      );
+                                    },
+                                    text: 'Actualizar',
+                                  ),
                                 ),
                                 Visibility(
                                   visible: widget.documentId == null,

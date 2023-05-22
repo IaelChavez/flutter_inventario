@@ -11,23 +11,23 @@ import '../firebase/firebase_services.dart';
 import '../widgets/button.dart';
 import 'screens.dart';
 
-class userView extends StatefulWidget {
+class RegisterUserView extends StatefulWidget {
   String? documentId;
   String? base;
 
-  userView({super.key, this.documentId, this.base});
+  RegisterUserView({super.key, this.documentId, this.base});
 
   @override
-  _userView createState() => _userView();
+  _RegisterUserView createState() => _RegisterUserView();
 }
 
 Widget UserViewFactory(String id, String base) {
-  return userView(documentId: id, base: base);
+  return RegisterUserView(documentId: id, base: base);
 }
 
-class _userView extends State<userView> {
+class _RegisterUserView extends State<RegisterUserView> {
   late Object item;
-  _userView({Key? key}) : super();
+  _RegisterUserView({Key? key}) : super();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -254,18 +254,11 @@ class _userView extends State<userView> {
                                             });
                                             vaciarCampos();
                                             Navigator.pop(context);
-                                            Navigator.pop(context);
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const UsersList()));
-
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
                                               const SnackBar(
                                                   content: Text(
-                                                      'Usuario agregado correctamente')),
+                                                      'Usuario registrado correctamente')),
                                             );
                                           } catch (e) {}
                                         }
