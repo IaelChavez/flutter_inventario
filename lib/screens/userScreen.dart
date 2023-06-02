@@ -1,6 +1,7 @@
-import 'dart:html';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:practica_inventario/firebase/firebase_user.dart';
@@ -10,8 +11,13 @@ import 'package:practica_inventario/widgets/textField.dart';
 import '../Model/UserModel.dart';
 import '../controllers/dataItem.dart';
 import '../firebase/firebase_services.dart';
+import '../storage/select_image.dart';
 import '../widgets/button.dart';
 import 'screens.dart';
+import 'package:image_picker/image_picker.dart';
+
+import 'package:universal_html/html.dart' as html;
+
 
 class userView extends StatefulWidget {
   String? documentId;
@@ -36,6 +42,11 @@ Widget UserViewFactory(String id, String base) {
 }
 
 class _userView extends State<userView> {
+  File? image;
+  html.File? _imageFile;
+  String? imageUrl;
+  Image? _selectedImage;
+
   late Object item;
   _userView({Key? key}) : super();
 
@@ -89,6 +100,20 @@ class _userView extends State<userView> {
       return true;
     }
     return false;
+  }
+
+   void _handleImageUpload(html.File imageFile) {
+    setState(() {
+      _imageFile = imageFile;
+      final reader = html.FileReader();
+      reader.readAsDataUrl(imageFile);
+      reader.onLoadEnd.listen((event) {
+        setState(() {
+          final encodedImage = reader.result as String?;
+          _selectedImage = Image.network(encodedImage!, fit: BoxFit.cover);
+        });
+      });
+    });
   }
 
   @override
@@ -363,6 +388,34 @@ class _userView extends State<userView> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              _selectedImage != null
+                                ? Container(
+                                    width: 200,
+                                    height: 200,
+                                    child: _selectedImage,
+                                  )
+                                : Text('No se ha seleccionado ninguna imagen.'),
+                              const SizedBox(height: 20),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  try {
+                                    final input = html.FileUploadInputElement();
+                                    input.accept = 'image/*'; // Aceptar solo archivos de imagen
+                                    input.click();
+
+                                    input.onChange.listen((e) {
+                                      final files = input.files;
+                                      if (files!.isNotEmpty) {
+                                        final imageFile = files[0];
+                                        _handleImageUpload(imageFile);
+                                      }
+                                    });
+                                  } catch (e) {
+                                    print('Error al seleccionar la imagen: $e');
+                                  }
+                                },
+                                child: const Text('Seleccionar'),
+                              ),
                               const SizedBox(height: 20),
                               CustomTextField(
                                 controller: nameController,
