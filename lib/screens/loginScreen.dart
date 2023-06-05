@@ -51,7 +51,7 @@ class LoginScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const MenuScreen()));
+                        builder: (context) => MenuScreen()));
               },
               text: 'Iniciar sesión',
             ),

@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
+import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:practica_inventario/firebase/firebase_user.dart';
@@ -103,9 +105,7 @@ class _userView extends State<userView> {
     });
 
     return Scaffold(
-        appBar: const CustomAppBar(
-          title: 'User ',
-        ),
+        
         body: widget.documentId == null
             ? Container(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -369,8 +369,7 @@ class _userView extends State<userView> {
                                             controller: nameController,
                                             label: 'nombre',
                                             keyboardType: TextInputType.text,
-                                            inputFormatters: <
-                                                TextInputFormatter>[
+                                            inputFormatters: <TextInputFormatter>[
                                               FilteringTextInputFormatter.allow(
                                                   RegExp('[a-zA-Z]'))
                                             ],
@@ -381,8 +380,7 @@ class _userView extends State<userView> {
                                             controller: lastNameController,
                                             label: 'apellido',
                                             keyboardType: TextInputType.text,
-                                            inputFormatters: <
-                                                TextInputFormatter>[
+                                            inputFormatters: <TextInputFormatter>[
                                               FilteringTextInputFormatter.allow(
                                                   RegExp('[a-zA-Z]'))
                                             ],
@@ -393,8 +391,7 @@ class _userView extends State<userView> {
                                             controller: ageController,
                                             label: 'edad',
                                             keyboardType: TextInputType.number,
-                                            inputFormatters: <
-                                                TextInputFormatter>[
+                                            inputFormatters: <TextInputFormatter>[
                                               FilteringTextInputFormatter
                                                   .digitsOnly
                                             ],
@@ -405,8 +402,7 @@ class _userView extends State<userView> {
                                             controller: genderController,
                                             label: 'genero',
                                             keyboardType: TextInputType.text,
-                                            inputFormatters: <
-                                                TextInputFormatter>[
+                                            inputFormatters: <TextInputFormatter>[
                                               FilteringTextInputFormatter.allow(
                                                   RegExp('[a-zA-Z]'))
                                             ],
@@ -418,8 +414,7 @@ class _userView extends State<userView> {
                                             label: 'correo',
                                             keyboardType:
                                                 TextInputType.emailAddress,
-                                            inputFormatters: <
-                                                TextInputFormatter>[
+                                            inputFormatters: <TextInputFormatter>[
                                               FilteringTextInputFormatter
                                                   .singleLineFormatter,
                                             ],
@@ -453,10 +448,10 @@ class _userView extends State<userView> {
                                           Navigator.pop(context);
                                           Navigator.pop(context);
                                           Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const UsersList()));
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const UsersList()));
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
                                             const SnackBar(
