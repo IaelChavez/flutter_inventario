@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:practica_inventario/firebase/firebase_services.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:practica_inventario/Model/userModel.dart';
 import 'package:practica_inventario/screens/screens.dart';
-import 'package:practica_inventario/widgets/listStatic.dart';
 import 'package:practica_inventario/widgets/widgets.dart';
 
 class UsersList extends StatelessWidget {
@@ -20,7 +17,7 @@ class UsersList extends StatelessWidget {
             icon: const Icon(Icons.add),
             onPressed: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => userView()));
+                  context, MaterialPageRoute(builder: (context) => userView(documentId: null,base: null)));
             },
           ),
         ],
