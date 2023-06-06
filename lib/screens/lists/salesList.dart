@@ -48,7 +48,7 @@ class SaleList extends StatelessWidget {
               itemBuilder: (sale) => Text(sale.name),
               idItem: (sale) => sale.id,
               builderFromSnapshot: saleFromDocumentSnapshot,
-              updatePoint: UserViewFactory,
+              updatePoint: SalesViewFactory,
               );
           }
         },

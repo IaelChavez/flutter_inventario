@@ -48,7 +48,7 @@ class PurchaseList extends StatelessWidget {
               itemBuilder: (purchase) => Text(purchase.name),
               idItem: (purchase) => purchase.id,
               builderFromSnapshot: purchaseFromDocumentSnapshot,
-              updatePoint: UserViewFactory,
+              updatePoint: PurchasesViewFactory,
               );
           }
         },
