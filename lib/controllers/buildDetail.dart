@@ -2,29 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:practica_inventario/Model/models.dart';
 import 'package:practica_inventario/controllers/controllers.dart';
 
-import 'package:practica_inventario/Model/UserModel.dart';
 
 String url(Object item, String base) {
-  if (base == 'users') {
+  if (base == 'cliente') {
     DataItem<dynamic> data = item as DataItem<dynamic>;
-    User user = data.item;
+    Cliente user = data.item;
     String imageValue = user.image;
     return imageValue;
-  } else if (base == 'products') {
+  } else if (base == 'ferrets') {
     DataItem<dynamic> data = item as DataItem<dynamic>;
-    Product product = data.item;
-  // String imageValue = product.image;
-  // return imageValue;
+    Ferret ferret = data.item;
+    String imageValue = ferret.image;
+    return imageValue;
   } else if (base == 'sales') {
     DataItem<dynamic> data = item as DataItem<dynamic>;
     Sale sale = data.item;
-  //  String imageValue = sale.image;
-  //  return imageValue;
-  } else if (base == 'purchases') {
+    //  String imageValue = sale.image;
+    //  return imageValue;
+  } else if (base == 'supplier') {
     DataItem<dynamic> data = item as DataItem<dynamic>;
-    Purchase purchase = data.item;
-  //  String imageValue = purchase.image;
-  // return imageValue;
+    Supplier supplier = data.item;
+    String imageValue = supplier.image;
+    return imageValue;
   }
   return 'Object type not supported';
 }
@@ -32,7 +31,7 @@ String url(Object item, String base) {
 Widget buildObjectDetails(Object object, String base) {
   if (base == 'users') {
     DataItem<dynamic> data = object as DataItem<dynamic>;
-    User user = data.item;
+    Cliente user = data.item;
     return Column(
       children: [
         buildDetailRow('Name:', user.name),
@@ -48,22 +47,21 @@ Widget buildObjectDetails(Object object, String base) {
         buildDetailRow('Password:', user.password),
       ],
     );
-  } else if (base == 'products') {
+  } else if (base == 'ferrets') {
     DataItem<dynamic> data = object as DataItem<dynamic>;
-    Product product = data.item;
+    Ferret ferret = data.item;
     return Column(
       children: [
-        buildDetailRow('Cost:', product.cost),
+        buildDetailRow('Cost:', ferret.species),
         SizedBox(height: 8),
-        buildDetailRow('Description:', product.description),
+        buildDetailRow('Description:', ferret.age),
         SizedBox(height: 8),
-        buildDetailRow('Name:', product.name),
+        buildDetailRow('Name:', ferret.color),
         SizedBox(height: 8),
-        buildDetailRow('Price:', product.price),
+        buildDetailRow('Price:', ferret.price),
         SizedBox(height: 8),
-        buildDetailRow('Units:', product.units),
+        buildDetailRow('Units:', ferret.nationality),
         SizedBox(height: 8),
-        buildDetailRow('Utility:', product.utility),
       ],
     );
   } else if (base == 'sales') {
@@ -80,26 +78,18 @@ Widget buildObjectDetails(Object object, String base) {
         buildDetailRow('Pieces:', sale.pieces),
       ],
     );
-  } else if (base == 'purchases') {
+  } else if (base == 'suppliers') {
     DataItem<dynamic> data = object as DataItem<dynamic>;
-    Purchase purchase = data.item;
+    Supplier supplier = data.item;
     return Column(
       children: [
-        buildDetailRow('Cant:', purchase.cant),
+        buildDetailRow('Nombre:', supplier.name),
         SizedBox(height: 8),
-        buildDetailRow('IdC:', purchase.idC),
+        buildDetailRow('Apellido:', supplier.lastName),
         SizedBox(height: 8),
-        buildDetailRow('IdProduct:', purchase.idProduct),
+        buildDetailRow('Correo:', supplier.email),
         SizedBox(height: 8),
-        buildDetailRow('IdV:', purchase.idV),
-        SizedBox(height: 8),
-        buildDetailRow('Name:', purchase.name),
-        SizedBox(height: 8),
-        buildDetailRow('Pieces:', purchase.pieces),
-        SizedBox(height: 8),
-        buildDetailRow('Subtotal:', purchase.subtotal),
-        SizedBox(height: 8),
-        buildDetailRow('Total:', purchase.total),
+        buildDetailRow('Compañia:', supplier.company),
       ],
     );
   }
@@ -115,7 +105,6 @@ Widget buildDetailRow(String label, dynamic value) {
         style: const TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.bold,
-
         ),
       ),
       Text(

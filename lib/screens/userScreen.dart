@@ -1,18 +1,16 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;  
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/services.dart';
 import 'package:practica_inventario/firebase/firebase_user.dart';
 import 'package:practica_inventario/widgets/appbar.dart';
 import 'package:practica_inventario/widgets/textField.dart';
 
-import '../Model/UserModel.dart';
+import '../Model/clienteModel.dart';
 import '../firebase/firebase_services.dart';
 import '../widgets/button.dart';
 import 'package:image_picker/image_picker.dart';
-
-
 
 class userView extends StatefulWidget {
   String? documentId;
@@ -101,21 +99,22 @@ class _userView extends State<userView> {
     });
   }
 
-    Future<String> uploadImageToFirebase() async {
+  Future<String> uploadImageToFirebase() async {
     if (_image == null) {
       throw Exception('No se ha seleccionado una imagen');
     }
 
-
-    firebase_storage.Reference storageReference =
-        firebase_storage.FirebaseStorage.instance.ref().child('images/${DateTime.now().millisecondsSinceEpoch}.jpg');
+    firebase_storage.Reference storageReference = firebase_storage
+        .FirebaseStorage.instance
+        .ref()
+        .child('images/${DateTime.now().millisecondsSinceEpoch}.jpg');
 
     firebase_storage.UploadTask uploadTask = storageReference.putFile(_image!);
-    firebase_storage.TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+    firebase_storage.TaskSnapshot taskSnapshot =
+        await uploadTask.whenComplete(() => null);
 
     return await taskSnapshot.ref.getDownloadURL();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -159,7 +158,8 @@ class _userView extends State<userView> {
                     DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
                         snapshot.data!;
 
-                    User uuser = User.fromDocumentSnapshot(documentSnapshot);
+                    Cliente uuser =
+                        Cliente.fromDocumentSnapshot(documentSnapshot);
 
                     nameController.text = uuser.name;
                     lastNameController.text = uuser.lastName;
@@ -391,26 +391,29 @@ class _userView extends State<userView> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               _image == null
-                                ? Icon(Icons.add_a_photo, size: 50, color: Colors.grey)
-                                : Container(
-                                    width: 200,
-                                    height: 200,
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey[300],
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      child: Image.file(
-                                        _image!,
-                                        fit: BoxFit.cover,
+                                  ? Icon(Icons.add_a_photo,
+                                      size: 50, color: Colors.grey)
+                                  : Container(
+                                      width: 200,
+                                      height: 200,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[300],
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        child: Image.file(
+                                          _image!,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
-                                  ),
                               const SizedBox(height: 20),
                               ElevatedButton(
                                 onPressed: () async {
-                                  await getImage();                                    
+                                  await getImage();
                                 },
                                 child: const Text('Seleccionar'),
                               ),
@@ -418,7 +421,8 @@ class _userView extends State<userView> {
                                 onPressed: () async {
                                   try {
                                     _imageUrl = await uploadImageToFirebase();
-                                    print('Imagen subida a Firebase Storage: $_imageUrl');
+                                    print(
+                                        'Imagen subida a Firebase Storage: $_imageUrl');
                                   } catch (e) {
                                     print('Error al subir la imagen: $e');
                                   }

@@ -5,7 +5,7 @@ import 'package:practica_inventario/firebase/firebase_user.dart';
 import 'package:practica_inventario/widgets/appbar.dart';
 import 'package:practica_inventario/widgets/textField.dart';
 
-import '../Model/UserModel.dart';
+import '../Model/clienteModel.dart';
 import '../controllers/dataItem.dart';
 import '../firebase/firebase_services.dart';
 import '../widgets/button.dart';
@@ -314,7 +314,7 @@ class _RegisterUserView extends State<RegisterUserView> {
                       DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
                           snapshot.data!;
 
-                      User uuser = User.fromDocumentSnapshot(documentSnapshot);
+                      Cliente uuser = Cliente.fromDocumentSnapshot(documentSnapshot);
 
                       nameController.text = uuser.name;
                       lastNameController.text = uuser.lastName;

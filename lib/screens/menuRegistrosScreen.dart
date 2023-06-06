@@ -33,14 +33,14 @@ class MenuRegistrosScreen extends StatelessWidget {
               child: GestureDetector(
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const ProductList()));
+                  MaterialPageRoute(builder: (context) => const FerretList()));
             },
             child: const ListTile(
               leading: Icon(
                 Icons.add_to_photos_sharp,
                 size: 30,
               ),
-              title: Text("Products", style: TextStyle(fontSize: 20.0)),
+              title: Text("Hurones", style: TextStyle(fontSize: 20.0)),
             ),
           )),
         ],

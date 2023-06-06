@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
         widget = const UsersList();
         break;
       case 1:
-        widget = const ProductList();
+        widget = const FerretList();
         break;
       case 2:
         widget = MenuScreen();
@@ -44,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
         widget = const SaleList();
         break;
       case 4:
-        widget = const PurchaseList();
+        widget = const SupplierList();
         break;
       default:
         widget = MenuScreen();

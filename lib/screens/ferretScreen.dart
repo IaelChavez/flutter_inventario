@@ -5,67 +5,65 @@ import 'package:practica_inventario/widgets/appbar.dart';
 import 'package:practica_inventario/widgets/textField.dart';
 
 import '../Model/models.dart';
-import '../firebase/firebase_product.dart';
+import '../firebase/firebase_ferret.dart';
 import '../firebase/firebase_services.dart';
 import '../widgets/button.dart';
 import 'lists/lists.dart';
 
-class ProductView extends StatefulWidget {
+class FerretView extends StatefulWidget {
   String? documentId;
   String? base;
 
-  ProductView({super.key, this.documentId, this.base});
+  FerretView({super.key, this.documentId, this.base});
 
   @override
-  _ProductView createState() => _ProductView();
+  _FerretView createState() => _FerretView();
 }
 
-Widget ProductViewFactory(String id, String base) {
-  return ProductView(documentId: id, base: base);
+Widget FerretViewFactory(String id, String base) {
+  return FerretView(documentId: id, base: base);
 }
 
-class _ProductView extends State<ProductView> {
-  _ProductView({Key? key}) : super();
+class _FerretView extends State<FerretView> {
+  _FerretView({Key? key}) : super();
 
   final _formKey = GlobalKey<FormState>();
 
   final List<String> _errors = [];
 
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
-  final TextEditingController unitsController = TextEditingController();
-  final TextEditingController costController = TextEditingController();
+  final TextEditingController speciesController = TextEditingController();
+  final TextEditingController ageController = TextEditingController();
+  final TextEditingController colorController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
-  final TextEditingController utilityController = TextEditingController();
+  final TextEditingController nationalityController = TextEditingController();
 
-  bool _showErrorName = false;
-  bool _showErrorDescription = false;
-  bool _showErrorUnits = false;
-  bool _showErrorCost = false;
+  bool _showErrorSpecies = false;
+  bool _showErrorAge = false;
+  bool _showErrorColor = false;
   bool _showErrorPrice = false;
-  bool _showErrorUtility = false;
+  bool _showErrorNationality = false;
+  bool _showErrorImage = false;
 
-  String _name = '';
-  String _descrition = '';
-  String _units = '';
-  String _cost = '';
+  String _species = '';
+  String _age = '';
+  String _color = '';
   String _price = '';
-  String _utility = '';
+  String _nationality = '';
+  String _imageUrl = '';
 
   vaciarCampos() {
-    nameController.clear();
-    descriptionController.clear();
-    unitsController.clear();
-    costController.clear();
+    speciesController.clear();
+    ageController.clear();
+    colorController.clear();
     priceController.clear();
-    utilityController.clear();
+    nationalityController.clear();
 
-    _name = '';
-    _descrition = '';
-    _units = '';
-    _cost = '';
+    _species = '';
+    _age = '';
+    _color = '';
     _price = '';
-    _utility = '';
+    _nationality = '';
+    _imageUrl = '';
   }
 
   bool _validar(String value) {
@@ -77,28 +75,25 @@ class _ProductView extends State<ProductView> {
 
   @override
   Widget build(BuildContext context) {
-    nameController.addListener(() {
-      _name = nameController.text;
+    speciesController.addListener(() {
+      _species = speciesController.text;
     });
-    descriptionController.addListener(() {
-      _descrition = descriptionController.text;
+    ageController.addListener(() {
+      _age = ageController.text;
     });
-    unitsController.addListener(() {
-      _units = unitsController.text;
-    });
-    costController.addListener(() {
-      _cost = costController.text;
+    colorController.addListener(() {
+      _color = colorController.text;
     });
     priceController.addListener(() {
       _price = priceController.text;
     });
-    utilityController.addListener(() {
-      _utility = utilityController.text;
+    nationalityController.addListener(() {
+      _nationality = priceController.text;
     });
 
     return Scaffold(
         appBar: const CustomAppBar(
-          title: 'Product ',
+          title: 'Ferrets',
         ),
         body: widget.documentId == null
             ? Container(
@@ -129,8 +124,8 @@ class _ProductView extends State<ProductView> {
                                 children: [
                                   const SizedBox(height: 20),
                                   CustomTextField(
-                                    controller: nameController,
-                                    label: 'nombre',
+                                    controller: speciesController,
+                                    label: 'Especie',
                                     keyboardType: TextInputType.text,
                                     inputFormatters: <TextInputFormatter>[
                                       FilteringTextInputFormatter.allow(
@@ -138,56 +133,43 @@ class _ProductView extends State<ProductView> {
                                     ],
                                     onChanged: (value) {
                                       setState(() {
-                                        _name = value;
+                                        _species = value;
                                       });
                                     },
                                   ),
                                   const SizedBox(height: 20),
                                   CustomTextField(
-                                    controller: descriptionController,
-                                    label: 'descripcion',
+                                    controller: ageController,
+                                    label: 'Edad',
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: <TextInputFormatter>[
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _age = value;
+                                      });
+                                    },
+                                  ),
+                                  const SizedBox(height: 20),
+                                  CustomTextField(
+                                    controller: colorController,
+                                    label: 'Color',
+                                    keyboardType: TextInputType.text,
                                     inputFormatters: <TextInputFormatter>[
                                       FilteringTextInputFormatter.allow(
                                           RegExp('[a-zA-Z]'))
                                     ],
                                     onChanged: (value) {
                                       setState(() {
-                                        _descrition = value;
-                                      });
-                                    },
-                                  ),
-                                  const SizedBox(height: 20),
-                                  CustomTextField(
-                                    controller: unitsController,
-                                    label: 'unidades',
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _cost = value;
-                                      });
-                                    },
-                                  ),
-                                  const SizedBox(height: 20),
-                                  CustomTextField(
-                                    controller: costController,
-                                    label: 'costo',
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _cost = value;
+                                        _color = value;
                                       });
                                     },
                                   ),
                                   const SizedBox(height: 20),
                                   CustomTextField(
                                     controller: priceController,
-                                    label: 'precio',
+                                    label: 'Precio',
                                     keyboardType: TextInputType.number,
                                     inputFormatters: <TextInputFormatter>[
                                       FilteringTextInputFormatter.digitsOnly
@@ -200,15 +182,16 @@ class _ProductView extends State<ProductView> {
                                   ),
                                   const SizedBox(height: 20),
                                   CustomTextField(
-                                    controller: utilityController,
-                                    label: 'utilidad',
-                                    keyboardType: TextInputType.number,
+                                    controller: nationalityController,
+                                    label: 'Nacionalidad',
+                                    keyboardType: TextInputType.text,
                                     inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly
+                                      FilteringTextInputFormatter.allow(
+                                          RegExp('[a-zA-Z]'))
                                     ],
                                     onChanged: (value) {
                                       setState(() {
-                                        _utility = value;
+                                        _nationality = value;
                                       });
                                     },
                                   ),
@@ -221,13 +204,13 @@ class _ProductView extends State<ProductView> {
                               child: GradientButton(
                                 onPressed: () {
                                   // Acción cuando se presione el botón
-                                  updateProducts({
-                                    'name': _name,
-                                    'description': _descrition,
-                                    'units': _units,
-                                    'cost': _cost,
+                                  updateFerrets({
+                                    'species': _species,
+                                    'age': _age,
+                                    'units': _color,
                                     'price': _price,
-                                    'utility': _utility,
+                                    'nationality': _nationality,
+                                    'image': _imageUrl,
                                   }, widget.documentId!);
                                 },
                                 text: 'Actualizar',
@@ -239,35 +222,32 @@ class _ProductView extends State<ProductView> {
                                 text: 'Guardar',
                                 onPressed: () {
                                   setState(() {
-                                    _showErrorName = false;
-                                    _showErrorDescription = false;
-                                    _showErrorUnits = false;
-                                    _showErrorCost = false;
+                                    _showErrorSpecies = false;
+                                    _showErrorAge = false;
+                                    _showErrorColor = false;
                                     _showErrorPrice = false;
-                                    _showErrorUtility = false;
+                                    _showErrorNationality = false;
                                     // Validar cada campo individualmente para mostrar la alerta una por una
-                                    if (_validar(_name)) {
-                                      _showErrorName = true;
-                                    } else if (_validar(_descrition)) {
-                                      _showErrorDescription = true;
-                                    } else if (_validar(_units)) {
-                                      _showErrorUnits = true;
-                                    } else if (_validar(_cost)) {
-                                      _showErrorCost = true;
+                                    if (_validar(_species)) {
+                                      _showErrorSpecies = true;
+                                    } else if (_validar(_age)) {
+                                      _showErrorAge = true;
+                                    } else if (_validar(_color)) {
+                                      _showErrorColor = true;
                                     } else if (_validar(_price)) {
                                       _showErrorPrice = true;
-                                    } else if (_validar(_utility)) {
-                                      _showErrorUtility = true;
+                                    } else if (_validar(_nationality)) {
+                                      _showErrorNationality = true;
                                     } else {
                                       // El formulario es válido, envía los datos
                                       try {
-                                        addProduct({
-                                          'name': _name,
-                                          'description': _descrition,
-                                          'units': _units,
-                                          'cost': _cost,
+                                        addFerret({
+                                          'species': _species,
+                                          'age': _age,
+                                          'units': _color,
                                           'price': _price,
-                                          'utility': _utility,
+                                          'nationality': _nationality,
+                                          'image': _imageUrl,
                                         });
                                         vaciarCampos();
                                         Navigator.pop(context);
@@ -276,12 +256,12 @@ class _ProductView extends State<ProductView> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    const ProductList()));
+                                                    const FerretList()));
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           const SnackBar(
                                               content: Text(
-                                                  'Producto agregado correctamente')),
+                                                  'Huron agregado correctamente')),
                                         );
                                       } catch (e) {}
                                     }
@@ -291,28 +271,28 @@ class _ProductView extends State<ProductView> {
                             ),
                             const SizedBox(height: 15),
                             Visibility(
-                              visible: _showErrorName,
-                              child: const Text('Rellena el nombre.'),
+                              visible: _showErrorSpecies,
+                              child: const Text('Rellena la Especie.'),
                             ),
                             Visibility(
-                              visible: _showErrorDescription,
-                              child: const Text('Rellena la descripcion.'),
+                              visible: _showErrorAge,
+                              child: const Text('Rellena la edad.'),
                             ),
                             Visibility(
-                              visible: _showErrorUnits,
-                              child: const Text('Rellena las unidades.'),
-                            ),
-                            Visibility(
-                              visible: _showErrorCost,
-                              child: const Text('Rellena el costo.'),
+                              visible: _showErrorColor,
+                              child: const Text('Rellena el Color.'),
                             ),
                             Visibility(
                               visible: _showErrorPrice,
-                              child: const Text('Rellena el precio.'),
+                              child: const Text('Rellena el Precio.'),
                             ),
                             Visibility(
-                              visible: _showErrorUtility,
-                              child: const Text('Rellena la utilidad.'),
+                              visible: _showErrorNationality,
+                              child: const Text('Rellena la Nacionalidad.'),
+                            ),
+                            Visibility(
+                              visible: _showErrorImage,
+                              child: const Text('Selecciona la imagen.'),
                             ),
                           ],
                         )),
@@ -335,15 +315,14 @@ class _ProductView extends State<ProductView> {
                       DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
                           snapshot.data!;
 
-                      Product product =
-                          Product.fromDocumentSnapshot(documentSnapshot);
+                      Ferret ferret =
+                          Ferret.fromDocumentSnapshot(documentSnapshot);
 
-                      nameController.text = product.name;
-                      descriptionController.text = product.description;
-                      unitsController.text = product.units;
-                      costController.text = product.cost;
-                      priceController.text = product.price;
-                      utilityController.text = product.utility;
+                      speciesController.text = ferret.species;
+                      ageController.text = ferret.age;
+                      colorController.text = ferret.color;
+                      priceController.text = ferret.price;
+                      nationalityController.text = ferret.nationality;
                     }
                     return Container(
                         padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -374,74 +353,83 @@ class _ProductView extends State<ProductView> {
                                         children: [
                                           const SizedBox(height: 20),
                                           CustomTextField(
-                                            controller: nameController,
-                                            label: 'nombre',
+                                            controller: speciesController,
+                                            label: 'Especie',
                                             keyboardType: TextInputType.text,
                                             inputFormatters: <
                                                 TextInputFormatter>[
                                               FilteringTextInputFormatter.allow(
                                                   RegExp('[a-zA-Z]'))
                                             ],
-                                            onChanged: (value) {},
+                                            onChanged: (value) {
+                                              setState(() {
+                                                _species = value;
+                                              });
+                                            },
                                           ),
                                           const SizedBox(height: 20),
                                           CustomTextField(
-                                            controller: descriptionController,
-                                            label: 'descripcion',
+                                            controller: ageController,
+                                            label: 'Edad',
+                                            keyboardType: TextInputType.number,
+                                            inputFormatters: <
+                                                TextInputFormatter>[
+                                              FilteringTextInputFormatter
+                                                  .digitsOnly
+                                            ],
+                                            onChanged: (value) {
+                                              setState(() {
+                                                _age = value;
+                                              });
+                                            },
+                                          ),
+                                          const SizedBox(height: 20),
+                                          CustomTextField(
+                                            controller: colorController,
+                                            label: 'Color',
+                                            keyboardType: TextInputType.text,
                                             inputFormatters: <
                                                 TextInputFormatter>[
                                               FilteringTextInputFormatter.allow(
                                                   RegExp('[a-zA-Z]'))
                                             ],
-                                            onChanged: (value) {},
-                                          ),
-                                          const SizedBox(height: 20),
-                                          CustomTextField(
-                                            controller: unitsController,
-                                            label: 'unidades',
-                                            keyboardType: TextInputType.number,
-                                            inputFormatters: <
-                                                TextInputFormatter>[
-                                              FilteringTextInputFormatter
-                                                  .digitsOnly
-                                            ],
-                                            onChanged: (value) {},
-                                          ),
-                                          const SizedBox(height: 20),
-                                          CustomTextField(
-                                            controller: costController,
-                                            label: 'costo',
-                                            keyboardType: TextInputType.number,
-                                            inputFormatters: <
-                                                TextInputFormatter>[
-                                              FilteringTextInputFormatter
-                                                  .digitsOnly
-                                            ],
-                                            onChanged: (value) {},
+                                            onChanged: (value) {
+                                              setState(() {
+                                                _color = value;
+                                              });
+                                            },
                                           ),
                                           const SizedBox(height: 20),
                                           CustomTextField(
                                             controller: priceController,
-                                            label: 'precio',
+                                            label: 'Precio',
                                             keyboardType: TextInputType.number,
                                             inputFormatters: <
                                                 TextInputFormatter>[
                                               FilteringTextInputFormatter
                                                   .digitsOnly
                                             ],
-                                            onChanged: (value) {},
+                                            onChanged: (value) {
+                                              setState(() {
+                                                _price = value;
+                                              });
+                                            },
                                           ),
                                           const SizedBox(height: 20),
                                           CustomTextField(
-                                            controller: utilityController,
-                                            label: 'utilidad',
-                                            keyboardType: TextInputType.number,
+                                            controller: nationalityController,
+                                            label: 'Nacionalidad',
+                                            keyboardType: TextInputType.text,
                                             inputFormatters: <
                                                 TextInputFormatter>[
-                                              FilteringTextInputFormatter
-                                                  .digitsOnly
+                                              FilteringTextInputFormatter.allow(
+                                                  RegExp('[a-zA-Z]'))
                                             ],
-                                            onChanged: (value) {},
+                                            onChanged: (value) {
+                                              setState(() {
+                                                _nationality = value;
+                                              });
+                                            },
                                           ),
                                           const SizedBox(height: 20),
                                         ],
@@ -452,26 +440,26 @@ class _ProductView extends State<ProductView> {
                                       child: GradientButton(
                                         onPressed: () {
                                           // Acción cuando se presione el botón
-                                          updateProducts({
-                                            'name': _name,
-                                            'description': _descrition,
-                                            'units': _units,
-                                            'cost': _cost,
+                                          updateFerrets({
+                                            'species': _species,
+                                            'age': _age,
+                                            'units': _color,
                                             'price': _price,
-                                            'utility': _utility,
+                                            'nationality': _nationality,
+                                            'image': _imageUrl,
                                           }, widget.documentId!);
                                           Navigator.pop(context);
                                           Navigator.pop(context);
                                           Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const ProductList()));
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const FerretList()));
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
                                             const SnackBar(
-                                                content:
-                                                    Text('Producto actualizado correctamente')),
+                                                content: Text(
+                                                    'Huron actualizado correctamente')),
                                           );
                                         },
                                         text: 'Actualizar',
@@ -483,35 +471,32 @@ class _ProductView extends State<ProductView> {
                                         text: 'Guardar',
                                         onPressed: () {
                                           setState(() {
-                                            _showErrorName = false;
-                                            _showErrorDescription = false;
-                                            _showErrorUnits = false;
-                                            _showErrorCost = false;
+                                            _showErrorSpecies = false;
+                                            _showErrorAge = false;
+                                            _showErrorColor = false;
                                             _showErrorPrice = false;
-                                            _showErrorUtility = false;
+                                            _showErrorNationality = false;
                                             // Validar cada campo individualmente para mostrar la alerta una por una
-                                            if (_validar(_name)) {
-                                              _showErrorName = true;
-                                            } else if (_validar(_descrition)) {
-                                              _showErrorDescription = true;
-                                            } else if (_validar(_units)) {
-                                              _showErrorUnits = true;
-                                            } else if (_validar(_cost)) {
-                                              _showErrorCost = true;
+                                            if (_validar(_species)) {
+                                              _showErrorSpecies = true;
+                                            } else if (_validar(_age)) {
+                                              _showErrorAge = true;
+                                            } else if (_validar(_color)) {
+                                              _showErrorColor = true;
                                             } else if (_validar(_price)) {
                                               _showErrorPrice = true;
-                                            } else if (_validar(_utility)) {
-                                              _showErrorUtility = true;
+                                            } else if (_validar(_nationality)) {
+                                              _showErrorNationality = true;
                                             } else {
                                               // El formulario es válido, envía los datos
                                               try {
-                                                addProduct({
-                                                  'name': _name,
-                                                  'description': _descrition,
-                                                  'units': _units,
-                                                  'cost': _cost,
+                                                addFerret({
+                                                  'species': _species,
+                                                  'age': _age,
+                                                  'units': _color,
                                                   'price': _price,
-                                                  'utility': _utility,
+                                                  'nationality': _nationality,
+                                                  'image': _imageUrl,
                                                 });
                                                 vaciarCampos();
                                               } catch (e) {}
@@ -522,30 +507,30 @@ class _ProductView extends State<ProductView> {
                                     ),
                                     const SizedBox(height: 15),
                                     Visibility(
-                                      visible: _showErrorName,
-                                      child: const Text('Rellena el nombre.'),
+                                      visible: _showErrorSpecies,
+                                      child: const Text('Rellena la Especie.'),
                                     ),
                                     Visibility(
-                                      visible: _showErrorDescription,
-                                      child:
-                                          const Text('Rellena la descripcion.'),
+                                      visible: _showErrorAge,
+                                      child: const Text('Rellena la edad.'),
                                     ),
                                     Visibility(
-                                      visible: _showErrorUnits,
-                                      child:
-                                          const Text('Rellena las unidades.'),
-                                    ),
-                                    Visibility(
-                                      visible: _showErrorCost,
-                                      child: const Text('Rellena el costo.'),
+                                      visible: _showErrorColor,
+                                      child: const Text('Rellena el Color.'),
                                     ),
                                     Visibility(
                                       visible: _showErrorPrice,
-                                      child: const Text('Rellena el precio.'),
+                                      child: const Text('Rellena el Precio.'),
                                     ),
                                     Visibility(
-                                      visible: _showErrorUtility,
-                                      child: const Text('Rellena la utilidad.'),
+                                      visible: _showErrorNationality,
+                                      child: const Text(
+                                          'Rellena la Nacionalidad.'),
+                                    ),
+                                    Visibility(
+                                      visible: _showErrorImage,
+                                      child:
+                                          const Text('Selecciona la imagen.'),
                                     ),
                                   ],
                                 )),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:practica_inventario/firebase/firebase_services.dart';
-import 'package:practica_inventario/Model/UserModel.dart';
+import 'package:practica_inventario/Model/clienteModel.dart';
 import 'package:practica_inventario/screens/screens.dart';
 import 'package:practica_inventario/widgets/widgets.dart';
 
@@ -22,7 +22,7 @@ class UsersList extends StatelessWidget {
           ),
         ],
       ),
-      body: FutureBuilder<List<User>>(
+      body: FutureBuilder<List<Cliente>>(
         future: getUsers(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -34,7 +34,7 @@ class UsersList extends StatelessWidget {
               child: Text('Error: ${snapshot.error}'),
             );
           } else {
-            List<User> users = snapshot.data!;
+            List<Cliente> users = snapshot.data!;
             return Lista(
               items: users,
               leadingIcon: Icons.person,

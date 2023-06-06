@@ -3,13 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-
-
-abstract class ImageProperty {
-  String get image;
-}
-
-class User extends ImageProperty {
+class Cliente {
   final String id;
   final String name;
   final String lastName;
@@ -17,11 +11,9 @@ class User extends ImageProperty {
   final String gender;
   final String email;
   final String password;
-  
-  @override
   final String image;
 
-  User(
+  Cliente(
     {
       required this.id, 
       required this.name, 
@@ -34,9 +26,9 @@ class User extends ImageProperty {
     }
   );
 
-  factory User.fromDocumentSnapshot(DocumentSnapshot snapshot) {
+  factory Cliente.fromDocumentSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
-    return User(
+    return Cliente(
       id: snapshot.id,
       name: data['name'] ?? '',
       lastName: data['lastName'] ?? '',
@@ -49,9 +41,9 @@ class User extends ImageProperty {
   }
 }
 
-User userFromDocumentSnapshot(DocumentSnapshot snapshot) {
+Cliente userFromDocumentSnapshot(DocumentSnapshot snapshot) {
   final data = snapshot.data() as Map<String, dynamic>;
-  return User(
+  return Cliente(
       id: snapshot.id,
       name: data['name'],
       lastName: data['lastName'],

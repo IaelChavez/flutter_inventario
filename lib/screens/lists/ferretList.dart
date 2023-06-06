@@ -3,33 +3,33 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:practica_inventario/Model/models.dart';
 import 'package:practica_inventario/firebase/firebase_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:practica_inventario/Model/UserModel.dart';
+import 'package:practica_inventario/Model/clienteModel.dart';
 import 'package:practica_inventario/screens/screens.dart';
 import 'package:practica_inventario/widgets/listStatic.dart';
 import 'package:practica_inventario/widgets/widgets.dart';
 
-import '../../firebase/firebase_product.dart';
+import '../../firebase/firebase_ferret.dart';
 
-class ProductList extends StatelessWidget {
-  const ProductList({super.key});
+class FerretList extends StatelessWidget {
+  const FerretList({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Products ',
+        title: 'Ferrets ',
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => ProductView()));
+                  context, MaterialPageRoute(builder: (context) => FerretView()));
             },
           ),
         ],
       ),
-      body: FutureBuilder<List<Product>>(
-        future: getProducts(),
+      body: FutureBuilder<List<Ferret>>(
+        future: getFerrets(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -40,15 +40,15 @@ class ProductList extends StatelessWidget {
               child: Text('Error: ${snapshot.error}'),
             );
           } else {
-            List<Product> products = snapshot.data!;
+            List<Ferret> ferret = snapshot.data!;
             return Lista(
-              items: products,
+              items: ferret,
               leadingIcon: Icons.person,
-              base: 'products',
-              itemBuilder: (product) => Text(product.name),
-              idItem: (product) => product.id,
-              builderFromSnapshot: productFromDocumentSnapshot,
-              updatePoint: ProductViewFactory,
+              base: 'ferrets',
+              itemBuilder: (ferret) => Text(ferret.species),
+              idItem: (ferret) => ferret.id,
+              builderFromSnapshot: ferretFromDocumentSnapshot,
+              updatePoint: FerretViewFactory,
               );
           }
         },

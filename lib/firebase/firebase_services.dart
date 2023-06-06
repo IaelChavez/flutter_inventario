@@ -2,7 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../Model/UserModel.dart';
+import '../Model/clienteModel.dart';
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 
@@ -10,13 +10,13 @@ Future<void> addUser(Map<String, dynamic> data) async {
   await db.collection('users').add(data);
 }
 
-Future<List<User>>? getUsers() async {
-  List<User> users = [];
+Future<List<Cliente>>? getUsers() async {
+  List<Cliente> users = [];
   QuerySnapshot<Map<String, dynamic>> querySnapshot =
       await FirebaseFirestore.instance.collection('users').get();
 
   querySnapshot.docs.forEach((doc) {
-    User user = User(
+    Cliente user = Cliente(
       id: doc.id,
       name: doc.data()['name'],
       lastName: doc.data()['lastName'],
