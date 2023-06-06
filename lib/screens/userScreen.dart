@@ -1,18 +1,15 @@
 import 'dart:io';
-import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
-import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;  
 import 'package:flutter/services.dart';
 import 'package:practica_inventario/firebase/firebase_user.dart';
 import 'package:practica_inventario/widgets/appbar.dart';
 import 'package:practica_inventario/widgets/textField.dart';
 
 import '../Model/UserModel.dart';
-import '../controllers/dataItem.dart';
 import '../firebase/firebase_services.dart';
 import '../widgets/button.dart';
-import 'screens.dart';
 import 'package:image_picker/image_picker.dart';
 
 
@@ -57,6 +54,7 @@ class _userView extends State<userView> {
   bool _showErrorGender = false;
   bool _showErrorEmail = false;
   bool _showErrorPassword = false;
+  bool _showErrorImage = false;
 
   String _name = '';
   String _lastName = '';
@@ -64,6 +62,7 @@ class _userView extends State<userView> {
   String _gender = '';
   String _email = '';
   String _password = '';
+  String _imageUrl = '';
 
   vaciarCampos() {
     idController.clear();
@@ -80,6 +79,7 @@ class _userView extends State<userView> {
     _gender = '';
     _email = '';
     _password = '';
+    _imageUrl = '';
   }
 
   bool _validar(String value) {
@@ -100,6 +100,22 @@ class _userView extends State<userView> {
       }
     });
   }
+
+    Future<String> uploadImageToFirebase() async {
+    if (_image == null) {
+      throw Exception('No se ha seleccionado una imagen');
+    }
+
+
+    firebase_storage.Reference storageReference =
+        firebase_storage.FirebaseStorage.instance.ref().child('images/${DateTime.now().millisecondsSinceEpoch}.jpg');
+
+    firebase_storage.UploadTask uploadTask = storageReference.putFile(_image!);
+    firebase_storage.TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+
+    return await taskSnapshot.ref.getDownloadURL();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -258,6 +274,7 @@ class _userView extends State<userView> {
                                           "gender": _gender,
                                           "email": _email,
                                           "password": _password,
+                                          "image": _imageUrl,
                                         }, widget.documentId!);
                                       },
                                       text: 'Actualizar',
@@ -397,6 +414,17 @@ class _userView extends State<userView> {
                                 },
                                 child: const Text('Seleccionar'),
                               ),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  try {
+                                    _imageUrl = await uploadImageToFirebase();
+                                    print('Imagen subida a Firebase Storage: $_imageUrl');
+                                  } catch (e) {
+                                    print('Error al subir la imagen: $e');
+                                  }
+                                },
+                                child: Text('Subir a Firebase'),
+                              ),
                               const SizedBox(height: 20),
                               CustomTextField(
                                 controller: nameController,
@@ -496,6 +524,7 @@ class _userView extends State<userView> {
                               _showErrorGender = false;
                               _showErrorEmail = false;
                               _showErrorPassword = false;
+                              _showErrorImage = false;
                               // Validar cada campo individualmente para mostrar la alerta una por una
                               if (_validar(_name)) {
                                 _showErrorName = true;
@@ -509,6 +538,8 @@ class _userView extends State<userView> {
                                 _showErrorEmail = true;
                               } else if (_validar(_password)) {
                                 _showErrorPassword = true;
+                              } else if (_validar(_imageUrl)) {
+                                _showErrorImage = true;
                               } else {
                                 // El formulario es válido, envía los datos
                                 try {
@@ -519,6 +550,7 @@ class _userView extends State<userView> {
                                     "gender": _gender,
                                     "email": _email,
                                     "password": _password,
+                                    "image": _imageUrl,
                                   });
                                   vaciarCampos();
                                 } catch (e) {}
@@ -555,6 +587,10 @@ class _userView extends State<userView> {
                         Visibility(
                           visible: _showErrorPassword,
                           child: const Text('Rellena la contraseña.'),
+                        ),
+                        Visibility(
+                          visible: _showErrorImage,
+                          child: const Text('Selecciona una imagen.'),
                         ),
                       ],
                     )),

@@ -6,7 +6,7 @@ import 'package:practica_inventario/firebase/firebase_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:practica_inventario/controllers/controllers.dart';
 
-import '../Model/userModel.dart';
+import '../Model/UserModel.dart';
 
 class UserDetail extends StatefulWidget {
   final String documentId;

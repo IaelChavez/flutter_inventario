@@ -21,6 +21,7 @@ Future<List<User>>? getUsers() async {
       gender: doc.data()['gender'],
       email: doc.data()['email'],
       password: doc.data()['password'],
+      image: doc.data()['image']
     );
     users.add(user);
   });

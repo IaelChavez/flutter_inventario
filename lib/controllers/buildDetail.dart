@@ -2,6 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:practica_inventario/Model/models.dart';
 import 'package:practica_inventario/controllers/controllers.dart';
 
+import 'package:practica_inventario/Model/UserModel.dart';
+
+String url(Object item, String base) {
+  if (base == 'users') {
+    DataItem<dynamic> data = item as DataItem<dynamic>;
+    User user = data.item;
+    String imageValue = user.image;
+    return imageValue;
+  } else if (base == 'products') {
+    DataItem<dynamic> data = item as DataItem<dynamic>;
+    Product product = data.item;
+  // String imageValue = product.image;
+  // return imageValue;
+  } else if (base == 'sales') {
+    DataItem<dynamic> data = item as DataItem<dynamic>;
+    Sale sale = data.item;
+  //  String imageValue = sale.image;
+  //  return imageValue;
+  } else if (base == 'purchases') {
+    DataItem<dynamic> data = item as DataItem<dynamic>;
+    Purchase purchase = data.item;
+  //  String imageValue = purchase.image;
+  // return imageValue;
+  }
+  return 'Object type not supported';
+}
+
 Widget buildObjectDetails(Object object, String base) {
   if (base == 'users') {
     DataItem<dynamic> data = object as DataItem<dynamic>;

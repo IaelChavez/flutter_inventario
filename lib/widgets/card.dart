@@ -18,9 +18,9 @@ class CustomCard extends StatelessWidget {
             Container(
                 alignment: Alignment.topCenter,
                 height: MediaQuery.of(context).size.height / 1.7,
-                decoration: const BoxDecoration(
+                decoration:  BoxDecoration(
                     image: DecorationImage(
-                        image: NetworkImage("https://www.clinicaveterinariazarpa.com/wp-content/uploads/2019/04/ferret.jpg"), fit: BoxFit.cover)),
+                        image: NetworkImage(url(item,base)), fit: BoxFit.cover)),
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: Row(
@@ -65,3 +65,4 @@ class CustomCard extends StatelessWidget {
     );
   }
 }
+

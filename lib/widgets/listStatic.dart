@@ -4,7 +4,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:practica_inventario/Model/userModel.dart';
+import 'package:practica_inventario/Model/UserModel.dart';
 import 'package:practica_inventario/screens/screens.dart';
 import 'package:practica_inventario/widgets/widgets.dart';
 

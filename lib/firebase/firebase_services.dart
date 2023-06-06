@@ -2,7 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../Model/userModel.dart';
+import '../Model/UserModel.dart';
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 
@@ -10,7 +10,7 @@ Future<void> addUser(Map<String, dynamic> data) async {
   await db.collection('users').add(data);
 }
 
-Future<List<User>> getUsers() async {
+Future<List<User>>? getUsers() async {
   List<User> users = [];
   QuerySnapshot<Map<String, dynamic>> querySnapshot =
       await FirebaseFirestore.instance.collection('users').get();
@@ -24,6 +24,7 @@ Future<List<User>> getUsers() async {
       gender: doc.data()['gender'],
       email: doc.data()['email'],
       password: doc.data()['password'],
+      image: doc.data()['image'],
     );
     users.add(user);
   });

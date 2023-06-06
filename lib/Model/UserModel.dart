@@ -3,7 +3,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class User {
+
+
+abstract class ImageProperty {
+  String get image;
+}
+
+class User extends ImageProperty {
   final String id;
   final String name;
   final String lastName;
@@ -11,6 +17,9 @@ class User {
   final String gender;
   final String email;
   final String password;
+  
+  @override
+  final String image;
 
   User(
     {
@@ -20,7 +29,8 @@ class User {
       required this.age, 
       required this.gender, 
       required this.email, 
-      required this.password
+      required this.password,
+      required this.image,
     }
   );
 
@@ -34,6 +44,7 @@ class User {
       gender: data['gender'] ?? '',
       email: data['email'] ?? '',
       password: data['password'] ?? '',
+      image: data['image'] ?? '',
     );
   }
 }
@@ -48,5 +59,6 @@ User userFromDocumentSnapshot(DocumentSnapshot snapshot) {
       gender: data['gender'],
       email: data['email'],
       password: data['password'] ,
+      image: data['image']
     );
 }
