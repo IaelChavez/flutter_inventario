@@ -11,7 +11,6 @@ import 'package:practica_inventario/widgets/textField.dart';
 import '../Model/UserModel.dart';
 import '../controllers/dataItem.dart';
 import '../firebase/firebase_services.dart';
-import '../storage/select_image.dart';
 import '../widgets/button.dart';
 import 'screens.dart';
 import 'package:image_picker/image_picker.dart';
