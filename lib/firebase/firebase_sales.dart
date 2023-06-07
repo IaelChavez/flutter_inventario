@@ -19,10 +19,10 @@ Future<List<Sale>> getSales() async {
   querySnapshot.docs.forEach((doc) {
     Sale sale = Sale(
       id: doc.id,
-      idA: doc.data()['IdA'],
-      idProduct: doc.data()['idProduct'],
-      name: doc.data()['name'],
+      idFerret: doc.data()['idFerret'],
+      idClient: doc.data()['idClient'],
       pieces: doc.data()['pieces'],
+      total: doc.data()['total'],
     );
     sales.add(sale);
   });
