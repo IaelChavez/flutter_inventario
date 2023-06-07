@@ -8,21 +8,21 @@ import 'package:practica_inventario/controllers/controllers.dart';
 
 import '../Model/clienteModel.dart';
 
-class UserDetail extends StatefulWidget {
+class ClienteDetail extends StatefulWidget {
   final String documentId;
   final String base;
   final builderFromSnapshot;
 
-  UserDetail(
+  ClienteDetail(
       {required this.documentId,
       required this.base,
       required this.builderFromSnapshot});
 
   @override
-  _UserDetail createState() => _UserDetail();
+  _ClienteDetail createState() => _ClienteDetail();
 }
 
-class _UserDetail extends State<UserDetail> {
+class _ClienteDetail extends State<ClienteDetail> {
   late Object item;
 
   @override

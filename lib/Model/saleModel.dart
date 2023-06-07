@@ -6,16 +6,12 @@ class Sale {
   final String id;
   final String idFerret;
   final String idClient;
-  final String pieces;
-  final String total;
 
   Sale(
     {
       required this.id, 
       required this.idFerret, 
       required this.idClient, 
-      required this.pieces, 
-      required this.total, 
     }
   );
 
@@ -25,8 +21,6 @@ class Sale {
       id: snapshot.id,
       idFerret: data['idFerret'] ?? '',
       idClient: data['idClient'] ?? '',
-      pieces: data['pieces'] ?? '',
-      total: data['total'] ?? '',
     );
   }
 }
@@ -37,7 +31,5 @@ Sale saleFromDocumentSnapshot(DocumentSnapshot snapshot) {
       id: snapshot.id,
       idFerret: data['idFerret'],
       idClient: data['idClient'],
-      pieces: data['pieces'],
-      total: data['total'],
     );
 }

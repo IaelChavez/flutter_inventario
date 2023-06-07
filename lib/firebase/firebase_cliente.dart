@@ -3,11 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../Model/clienteModel.dart';
 import 'firebase_services.dart';
 
-Future<void> updatedUser(Map<String, dynamic> data, documentId) async {
+Future<void> updatedCliente(Map<String, dynamic> data, documentId) async {
   await db.collection('clientes').doc(documentId).update(data);
 }
 
-Future<List<Cliente>>? getUsers() async {
+Future<List<Cliente>>? getCliente() async {
   List<Cliente> clientes = [];
   QuerySnapshot<Map<String, dynamic>> querySnapshot =
       await FirebaseFirestore.instance.collection('clientes').get();

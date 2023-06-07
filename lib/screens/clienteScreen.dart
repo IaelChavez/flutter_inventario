@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/services.dart';
-import 'package:practica_inventario/firebase/firebase_user.dart';
+import 'package:practica_inventario/firebase/firebase_cliente.dart';
 import 'package:practica_inventario/widgets/appbar.dart';
 import 'package:practica_inventario/widgets/textField.dart';
 
@@ -12,25 +12,25 @@ import '../firebase/firebase_services.dart';
 import '../widgets/button.dart';
 import 'package:image_picker/image_picker.dart';
 
-class userView extends StatefulWidget {
+class ClienteView extends StatefulWidget {
   String? documentId;
   String? base;
 
-  userView({this.documentId, this.base});
+  ClienteView({this.documentId, this.base});
   @override
-  _userView createState() => _userView();
+  _ClienteView createState() => _ClienteView();
 }
 
-Widget UserViewFactory(String id, String base) {
-  return userView(documentId: id, base: base);
+Widget ClienteViewFactory(String id, String base) {
+  return ClienteView(documentId: id, base: base);
 }
 
-class _userView extends State<userView> {
+class _ClienteView extends State<ClienteView> {
   File? _image;
   final picker = ImagePicker();
 
   late Object item;
-  _userView({Key? key}) : super();
+  _ClienteView({Key? key}) : super();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -140,7 +140,7 @@ class _userView extends State<userView> {
     if (widget.documentId != null) {
       return Scaffold(
           appBar: const CustomAppBar(
-            title: 'User ',
+            title: 'Cliente ',
           ),
           body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>?>(
               future: getDataFirebase(widget.documentId!, widget.base!),
@@ -158,15 +158,15 @@ class _userView extends State<userView> {
                     DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
                         snapshot.data!;
 
-                    Cliente uuser =
+                    Cliente ccliente =
                         Cliente.fromDocumentSnapshot(documentSnapshot);
 
-                    nameController.text = uuser.name;
-                    lastNameController.text = uuser.lastName;
-                    ageController.text = uuser.age;
-                    genderController.text = uuser.gender;
-                    emailController.text = uuser.email;
-                    passwordController.text = uuser.password;
+                    nameController.text = ccliente.name;
+                    lastNameController.text = ccliente.lastName;
+                    ageController.text = ccliente.age;
+                    genderController.text = ccliente.gender;
+                    emailController.text = ccliente.email;
+                    passwordController.text = ccliente.password;
                   }
                   return Container(
                       padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -267,7 +267,7 @@ class _userView extends State<userView> {
                                     child: GradientButton(
                                       onPressed: () {
                                         // Acción cuando se presione el botón
-                                        updatedUser({
+                                        updatedCliente({
                                           "name": _name,
                                           "lastName": _lastName,
                                           "age": _age,
@@ -308,7 +308,7 @@ class _userView extends State<userView> {
                                           } else {
                                             // El formulario es válido, envía los datos
                                             try {
-                                              addUser({
+                                              addCliente({
                                                 "name": _name,
                                                 "lastName": _lastName,
                                                 "age": _age,
@@ -362,7 +362,7 @@ class _userView extends State<userView> {
     } else {
       return Scaffold(
           appBar: const CustomAppBar(
-            title: 'User ',
+            title: 'Cliente ',
           ),
           body: Container(
             padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -547,7 +547,7 @@ class _userView extends State<userView> {
                               } else {
                                 // El formulario es válido, envía los datos
                                 try {
-                                  addUser({
+                                  addCliente({
                                     "name": _name,
                                     "lastName": _lastName,
                                     "age": _age,

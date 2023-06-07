@@ -9,7 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import '../Model/models.dart';
 import '../firebase/firebase_supplier.dart';
 import '../firebase/firebase_services.dart';
-import '../firebase/firebase_user.dart';
+import '../firebase/firebase_cliente.dart';
 import '../widgets/appbar.dart';
 import '../widgets/button.dart';
 import '../widgets/textField.dart';
@@ -195,6 +195,11 @@ class _SupplierScreen extends State<SupplierScreen> {
                                   CustomTextField(
                                     controller: emailController,
                                     label: 'Correo',
+                                    keyboardType: TextInputType.emailAddress,
+                                    inputFormatters: <TextInputFormatter>[
+                                      FilteringTextInputFormatter
+                                          .singleLineFormatter,
+                                    ],
                                     onChanged: (value) {},
                                   ),
                                   const SizedBox(height: 20),

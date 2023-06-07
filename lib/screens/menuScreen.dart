@@ -8,7 +8,7 @@ import '../widgets/appbar.dart';
 class MenuScreen extends StatelessWidget {
   MenuScreen({Key? key}) : super(key: key);
 
-  List<String> tabs = ['Users', 'Ferrets', 'Home', 'Sales', 'Shopping'];
+  List<String> tabs = ['Clientes', 'Ferrets', 'Home', 'Sales', 'Shopping'];
 
   @override
   Widget build(BuildContext context) {

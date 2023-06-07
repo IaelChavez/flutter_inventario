@@ -41,7 +41,7 @@ class Cliente {
   }
 }
 
-Cliente userFromDocumentSnapshot(DocumentSnapshot snapshot) {
+Cliente clienteFromDocumentSnapshot(DocumentSnapshot snapshot) {
   final data = snapshot.data() as Map<String, dynamic>;
   return Cliente(
       id: snapshot.id,

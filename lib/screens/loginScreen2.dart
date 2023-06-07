@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:practica_inventario/screens/home_screen.dart';
 
 import '../widgets/button.dart';
-import 'registerUserScreen.dart';
 import 'screens.dart';
 
 class LoginScreen2 extends StatelessWidget {
@@ -85,7 +84,7 @@ class LoginScreen2 extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => RegisterUserView()));
+                            builder: (context) => ClienteView()));
                   },
                   text: 'Registrarse',
                 ),

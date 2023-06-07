@@ -93,7 +93,7 @@ class Lista<T> extends StatelessWidget {
                           IconButton(
                             icon: const Icon(Icons.delete),
                             onPressed: () {
-                              _deleteUser(context, idItem(item), base);
+                              _deleteCliente(context, idItem(item), base);
                             },
                           ),
                         ]),
@@ -101,7 +101,7 @@ class Lista<T> extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => UserDetail(
+                              builder: (context) => ClienteDetail(
                                   documentId: idItem(item),
                                   base: base,
                                   builderFromSnapshot: builderFromSnapshot),
@@ -119,7 +119,7 @@ class Lista<T> extends StatelessWidget {
   }
 }
 
-void _deleteUser(BuildContext context, String documentId, String base) async {
+void _deleteCliente(BuildContext context, String documentId, String base) async {
   try {
     await FirebaseFirestore.instance.collection(base).doc(documentId).delete();
     ScaffoldMessenger.of(context).showSnackBar(
@@ -132,7 +132,7 @@ void _deleteUser(BuildContext context, String documentId, String base) async {
   }
 }
 
-void _updateUser(BuildContext context, String documentId, String base) async {
+void _updateCliente(BuildContext context, String documentId, String base) async {
   try {
     await FirebaseFirestore.instance.collection(base).doc(documentId).delete();
     ScaffoldMessenger.of(context).showSnackBar(

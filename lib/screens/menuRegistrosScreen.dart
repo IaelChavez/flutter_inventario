@@ -19,14 +19,14 @@ class MenuRegistrosScreen extends StatelessWidget {
               child: GestureDetector(
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const UsersList()));
+                  MaterialPageRoute(builder: (context) => const ClienteList()));
             },
             child: const ListTile(
               leading: Icon(
                 Icons.person_add,
                 size: 30,
               ),
-              title: Text("Users", style: TextStyle(fontSize: 20.0)),
+              title: Text("Clientes", style: TextStyle(fontSize: 20.0)),
             ),
           )),
           Card(

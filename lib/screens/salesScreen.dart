@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../Model/models.dart';
 import '../firebase/firebase_sales.dart';
@@ -25,61 +28,30 @@ Widget SalesViewFactory(String id, String base) {
 }
 
 class _SalesScreen extends State<SalesScreen> {
+  File? _image;
+  final picker = ImagePicker();
+
   _SalesScreen({Key? key}) : super();
 
   final _formKey = GlobalKey<FormState>();
 
   final List<String> _errors = [];
 
-  final TextEditingController idProductController = TextEditingController();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController piecesController = TextEditingController();
-  final TextEditingController idAController = TextEditingController();
+  String _idFerret = '';
+  String _idClient = '';
 
-  bool _showErrorIdProduct = false;
-  bool _showErrorName = false;
-  bool _showErrorPieces = false;
-  bool _showErrorIdA = false;
 
-  String _idProduct = '';
-  String _name = '';
-  String _pieces = '';
-  String _idA = '';
+  List<String> options = [
+    'Opción 1',
+    'Opción 2',
+    'Opción 3',
+    'Opción 4',
+  ];
 
-  vaciarCampos() {
-    idProductController.clear();
-    nameController.clear();
-    piecesController.clear();
-    idAController.clear();
-
-    _idProduct = '';
-    _name = '';
-    _pieces = '';
-    _idA = '';
-  }
-
-  bool _validar(String value) {
-    if (value.isEmpty) {
-      return true;
-    }
-    return false;
-  }
+  String selectedImages = '';
 
   @override
   Widget build(BuildContext context) {
-    idProductController.addListener(() {
-      _idProduct = idProductController.text;
-    });
-    nameController.addListener(() {
-      _name = nameController.text;
-    });
-    piecesController.addListener(() {
-      _pieces = piecesController.text;
-    });
-    idAController.addListener(() {
-      _idA = idAController.text;
-    });
-
     return Scaffold(
       appBar: const CustomAppBar(
         title: 'Sale ',
@@ -93,133 +65,102 @@ class _SalesScreen extends State<SalesScreen> {
                   fit: BoxFit.cover,
                 ),
               ),
-              child: Scaffold(
+              child: Stack(children: [
+                Scaffold(
                   backgroundColor: Colors.transparent,
-                  body: SingleChildScrollView(
-                    child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.8),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 50.0, horizontal: 20.0),
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          children: [
-                            Form(
-                              key: _formKey,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  CustomTextField(
-                                    controller: idProductController,
-                                    label: 'Id Producto',
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
-                                    onChanged: (value) {},
+                  body: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.8),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 50.0, horizontal: 20.0),
+                    padding: const EdgeInsets.all(20.0),
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('ferrets')
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          List<QueryDocumentSnapshot> documents =
+                              snapshot.data!.docs;
+                          return GridView.builder(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2, // Dos columnas
+                              mainAxisSpacing:
+                                  10.0, // Espaciado vertical entre los elementos
+                              crossAxisSpacing:
+                                  10.0, // Espaciado horizontal entre los elementos
+                            ),
+                            itemCount: documents.length,
+                            itemBuilder: (context, index) {
+                              var data = documents[index].data()
+                                  as Map<String, dynamic>;
+                              String image = data['image'] ?? '';
+                              String documentId = documents[index].id;
+
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    selectedImages = documentId;
+                                  });
+                                },
+                                child: AnimatedContainer(
+                                  duration: Duration(milliseconds: 300),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: selectedImages == documentId
+                                          ? Colors.blue
+                                          : Colors.transparent,
+                                      width: 2.0,
+                                    ),
                                   ),
-                                  const SizedBox(height: 20),
-                                  CustomTextField(
-                                    controller: nameController,
-                                    label: 'Nombre',
-                                    keyboardType: TextInputType.text,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.allow(
-                                          RegExp('[a-zA-Z]'))
-                                    ],
-                                    onChanged: (value) {},
+                                  child: Image.network(
+                                    image,
+                                    fit: BoxFit.cover,
                                   ),
-                                  const SizedBox(height: 20),
-                                  CustomTextField(
-                                    controller: piecesController,
-                                    label: 'Piezas',
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
-                                    onChanged: (value) {},
-                                  ),
-                                  const SizedBox(height: 20),
-                                  CustomTextField(
-                                    controller: idAController,
-                                    label: 'IdA',
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
-                                    onChanged: (value) {},
-                                  ),
-                                  const SizedBox(height: 20),
-                                ],
-                              ),
-                            ),
-                            GradientButton(
-                              text: 'Guardar',
-                              onPressed: () {
-                                setState(() {
-                                  _showErrorIdProduct = false;
-                                  _showErrorName = false;
-                                  _showErrorPieces = false;
-                                  _showErrorIdA = false;
-                                  // Validar cada campo individualmente para mostrar la alerta una por una
-                                  if (_validar(_idProduct)) {
-                                    _showErrorIdProduct = true;
-                                  } else if (_validar(_name)) {
-                                    _showErrorName = true;
-                                  } else if (_validar(_pieces)) {
-                                    _showErrorPieces = true;
-                                  } else if (_validar(_idA)) {
-                                    _showErrorIdA = true;
-                                  } else {
-                                    // El formulario es válido, envía los datos
-                                    try {
-                                      addSale({
-                                        'idProduct': _idProduct,
-                                        'name': _name,
-                                        'pieces': _pieces,
-                                        'IdA': _idA,
-                                      });
-                                      vaciarCampos();
-                                      Navigator.pop(context);
-                                      Navigator.pop(context);
-                                      Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const SaleList()));
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                            content: Text(
-                                                'Venta agregada correctamente')),
-                                      );
-                                    } catch (e) {}
-                                  }
-                                });
-                              },
-                            ),
-                            const SizedBox(height: 15),
-                            Visibility(
-                              visible: _showErrorIdProduct,
-                              child: const Text('Rellena el idProduct.'),
-                            ),
-                            Visibility(
-                              visible: _showErrorName,
-                              child: const Text('Rellena el nombre.'),
-                            ),
-                            Visibility(
-                              visible: _showErrorPieces,
-                              child: const Text('Rellena pieces.'),
-                            ),
-                            Visibility(
-                              visible: _showErrorIdA,
-                              child: const Text('Rellena el IdA.'),
-                            ),
-                          ],
-                        )),
-                  )))
+                                ),
+                              );
+                            },
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text('Error al obtener los datos de Firebase');
+                        }
+                        return CircularProgressIndicator();
+                      },
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 40.0,
+                  right: 20.0,
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      // Acción del botón flotante
+                      try {
+                        addSale({
+                          'idFerret': _idFerret,
+                          'idClient': _idClient,
+                        });
+
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SaleList()));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text('Venta agregada correctamente')),
+                        );
+                      } catch (e) {}
+                    },
+                    child: Icon(Icons.add),
+                  ),
+                ),
+              ]),
+            )
           : FutureBuilder<DocumentSnapshot<Map<String, dynamic>>?>(
               future: getDataFirebase(widget.documentId!, widget.base!),
               builder: (context, snapshot) {
@@ -237,11 +178,6 @@ class _SalesScreen extends State<SalesScreen> {
                         snapshot.data!;
 
                     Sale sale = Sale.fromDocumentSnapshot(documentSnapshot);
-
-                    idProductController.text = sale.idProduct;
-                    nameController.text = sale.name;
-                    piecesController.text = sale.pieces;
-                    idAController.text = sale.idA;
                   }
                   return Container(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -264,135 +200,7 @@ class _SalesScreen extends State<SalesScreen> {
                             padding: const EdgeInsets.all(20.0),
                             child: Column(
                               children: [
-                                Form(
-                                  key: _formKey,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      CustomTextField(
-                                        controller: idProductController,
-                                        label: 'Id Producto',
-                                        keyboardType: TextInputType.number,
-                                        inputFormatters: <TextInputFormatter>[
-                                          FilteringTextInputFormatter.digitsOnly
-                                        ],
-                                        onChanged: (value) {},
-                                      ),
-                                      const SizedBox(height: 20),
-                                      CustomTextField(
-                                        controller: nameController,
-                                        label: 'Nombre',
-                                        keyboardType: TextInputType.text,
-                                        inputFormatters: <TextInputFormatter>[
-                                          FilteringTextInputFormatter.allow(
-                                              RegExp('[a-zA-Z]'))
-                                        ],
-                                        onChanged: (value) {},
-                                      ),
-                                      const SizedBox(height: 20),
-                                      CustomTextField(
-                                        controller: piecesController,
-                                        label: 'Piezas',
-                                        keyboardType: TextInputType.number,
-                                        inputFormatters: <TextInputFormatter>[
-                                          FilteringTextInputFormatter.digitsOnly
-                                        ],
-                                        onChanged: (value) {},
-                                      ),
-                                      const SizedBox(height: 20),
-                                      CustomTextField(
-                                        controller: idAController,
-                                        label: 'IdA',
-                                        keyboardType: TextInputType.number,
-                                        inputFormatters: <TextInputFormatter>[
-                                          FilteringTextInputFormatter.digitsOnly
-                                        ],
-                                        onChanged: (value) {},
-                                      ),
-                                      const SizedBox(height: 20),
-                                    ],
-                                  ),
-                                ),
-                                Visibility(
-                                  visible: widget.documentId != null,
-                                  child: GradientButton(
-                                    onPressed: () {
-                                      // Acción cuando se presione el botón
-                                      updateSales({
-                                        'idProduct': _idProduct,
-                                        'name': _name,
-                                        'pieces': _pieces,
-                                        'IdA': _idA,
-                                      }, widget.documentId!);
-                                      Navigator.pop(context);
-                                      Navigator.pop(context);
-                                      Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const SaleList()));
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                            content: Text(
-                                                'Venta actualizada correctamente')),
-                                      );
-                                    },
-                                    text: 'Actualizar',
-                                  ),
-                                ),
-                                Visibility(
-                                  visible: widget.documentId == null,
-                                  child: GradientButton(
-                                    text: 'Guardar',
-                                    onPressed: () {
-                                      setState(() {
-                                        _showErrorIdProduct = false;
-                                        _showErrorName = false;
-                                        _showErrorPieces = false;
-                                        _showErrorIdA = false;
-                                        // Validar cada campo individualmente para mostrar la alerta una por una
-                                        if (_validar(_idProduct)) {
-                                          _showErrorIdProduct = true;
-                                        } else if (_validar(_name)) {
-                                          _showErrorName = true;
-                                        } else if (_validar(_pieces)) {
-                                          _showErrorPieces = true;
-                                        } else if (_validar(_idA)) {
-                                          _showErrorIdA = true;
-                                        } else {
-                                          // El formulario es válido, envía los datos
-                                          try {
-                                            addSale({
-                                              'idProduct': _idProduct,
-                                              'name': _name,
-                                              'pieces': _pieces,
-                                              'IdA': _idA,
-                                            });
-                                            vaciarCampos();
-                                          } catch (e) {}
-                                        }
-                                      });
-                                    },
-                                  ),
-                                ),
-                                const SizedBox(height: 15),
-                                Visibility(
-                                  visible: _showErrorIdProduct,
-                                  child: const Text('Rellena el idProduct.'),
-                                ),
-                                Visibility(
-                                  visible: _showErrorName,
-                                  child: const Text('Rellena el nombre.'),
-                                ),
-                                Visibility(
-                                  visible: _showErrorPieces,
-                                  child: const Text('Rellena pieces.'),
-                                ),
-                                Visibility(
-                                  visible: _showErrorIdA,
-                                  child: const Text('Rellena el IdA.'),
-                                ),
+                               
                               ],
                             )),
                       ),

@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:practica_inventario/widgets/appbar.dart';
 import 'package:practica_inventario/widgets/textField.dart';
+
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import '../Model/models.dart';
 import '../firebase/firebase_ferret.dart';
@@ -25,6 +30,8 @@ Widget FerretViewFactory(String id, String base) {
 }
 
 class _FerretView extends State<FerretView> {
+  File? _image;
+  final picker = ImagePicker();
   _FerretView({Key? key}) : super();
 
   final _formKey = GlobalKey<FormState>();
@@ -71,6 +78,35 @@ class _FerretView extends State<FerretView> {
       return true;
     }
     return false;
+  }
+
+  Future getImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  Future<String> uploadImageToFirebase() async {
+    if (_image == null) {
+      throw Exception('No se ha seleccionado una imagen');
+    }
+
+    firebase_storage.Reference storageReference = firebase_storage
+        .FirebaseStorage.instance
+        .ref()
+        .child('images/${DateTime.now().millisecondsSinceEpoch}.jpg');
+
+    firebase_storage.UploadTask uploadTask = storageReference.putFile(_image!);
+    firebase_storage.TaskSnapshot taskSnapshot =
+        await uploadTask.whenComplete(() => null);
+
+    return await taskSnapshot.ref.getDownloadURL();
   }
 
   @override
@@ -122,6 +158,46 @@ class _FerretView extends State<FerretView> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
+                                  _image == null
+                                      ? Icon(Icons.add_a_photo,
+                                          size: 50, color: Colors.grey)
+                                      : Container(
+                                          width: 200,
+                                          height: 200,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey[300],
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                            child: Image.file(
+                                              _image!,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                  const SizedBox(height: 20),
+                                  ElevatedButton(
+                                    onPressed: () async {
+                                      await getImage();
+                                    },
+                                    child: const Text('Seleccionar'),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () async {
+                                      try {
+                                        _imageUrl =
+                                            await uploadImageToFirebase();
+                                        print(
+                                            'Imagen subida a Firebase Storage: $_imageUrl');
+                                      } catch (e) {
+                                        print('Error al subir la imagen: $e');
+                                      }
+                                    },
+                                    child: Text('Subir a Firebase'),
+                                  ),
                                   const SizedBox(height: 20),
                                   CustomTextField(
                                     controller: speciesController,
@@ -207,7 +283,7 @@ class _FerretView extends State<FerretView> {
                                   updateFerrets({
                                     'species': _species,
                                     'age': _age,
-                                    'units': _color,
+                                    'color': _color,
                                     'price': _price,
                                     'nationality': _nationality,
                                     'image': _imageUrl,
@@ -244,7 +320,7 @@ class _FerretView extends State<FerretView> {
                                         addFerret({
                                           'species': _species,
                                           'age': _age,
-                                          'units': _color,
+                                          'color': _color,
                                           'price': _price,
                                           'nationality': _nationality,
                                           'image': _imageUrl,
@@ -443,7 +519,7 @@ class _FerretView extends State<FerretView> {
                                           updateFerrets({
                                             'species': _species,
                                             'age': _age,
-                                            'units': _color,
+                                            'color': _color,
                                             'price': _price,
                                             'nationality': _nationality,
                                             'image': _imageUrl,

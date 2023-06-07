@@ -6,8 +6,8 @@ import 'package:practica_inventario/controllers/controllers.dart';
 String url(Object item, String base) {
   if (base == 'cliente') {
     DataItem<dynamic> data = item as DataItem<dynamic>;
-    Cliente user = data.item;
-    String imageValue = user.image;
+    Cliente cliente = data.item;
+    String imageValue = cliente.image;
     return imageValue;
   } else if (base == 'ferrets') {
     DataItem<dynamic> data = item as DataItem<dynamic>;
@@ -29,22 +29,22 @@ String url(Object item, String base) {
 }
 
 Widget buildObjectDetails(Object object, String base) {
-  if (base == 'users') {
+  if (base == 'clientes') {
     DataItem<dynamic> data = object as DataItem<dynamic>;
-    Cliente user = data.item;
+    Cliente cliente = data.item;
     return Column(
       children: [
-        buildDetailRow('Name:', user.name),
+        buildDetailRow('Name:', cliente.name),
         SizedBox(height: 8),
-        buildDetailRow('Last Name:', user.lastName),
+        buildDetailRow('Last Name:', cliente.lastName),
         SizedBox(height: 8),
-        buildDetailRow('Age:', user.age),
+        buildDetailRow('Age:', cliente.age),
         SizedBox(height: 8),
-        buildDetailRow('Gender:', user.gender),
+        buildDetailRow('Gender:', cliente.gender),
         SizedBox(height: 8),
-        buildDetailRow('Email:', user.email),
+        buildDetailRow('Email:', cliente.email),
         SizedBox(height: 8),
-        buildDetailRow('Password:', user.password),
+        buildDetailRow('Password:', cliente.password),
       ],
     );
   } else if (base == 'ferrets') {
@@ -69,13 +69,9 @@ Widget buildObjectDetails(Object object, String base) {
     Sale sale = data.item;
     return Column(
       children: [
-        buildDetailRow('IdA:', sale.idA),
+        buildDetailRow('idFerret:', sale.idFerret),
         SizedBox(height: 8),
-        buildDetailRow('IdProduct:', sale.idProduct),
-        SizedBox(height: 8),
-        buildDetailRow('Name:', sale.name),
-        SizedBox(height: 8),
-        buildDetailRow('Pieces:', sale.pieces),
+        buildDetailRow('idClient:', sale.idClient),
       ],
     );
   } else if (base == 'suppliers') {

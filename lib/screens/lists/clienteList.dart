@@ -4,26 +4,26 @@ import 'package:practica_inventario/Model/clienteModel.dart';
 import 'package:practica_inventario/screens/screens.dart';
 import 'package:practica_inventario/widgets/widgets.dart';
 
-class UsersList extends StatelessWidget {
-  const UsersList({super.key});
+class ClienteList extends StatelessWidget {
+  const ClienteList({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Users ',
+        title: 'Cliente ',
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => userView(documentId: null,base: null)));
+                  context, MaterialPageRoute(builder: (context) => ClienteView(documentId: null,base: null)));
             },
           ),
         ],
       ),
       body: FutureBuilder<List<Cliente>>(
-        future: getUsers(),
+        future: getClientes(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -34,15 +34,15 @@ class UsersList extends StatelessWidget {
               child: Text('Error: ${snapshot.error}'),
             );
           } else {
-            List<Cliente> users = snapshot.data!;
+            List<Cliente> clientes = snapshot.data!;
             return Lista(
-              items: users,
+              items: clientes,
               leadingIcon: Icons.person,
-              base: 'users',
-              itemBuilder: (user) => Text(user.name),
-              idItem: (user) => user.id,
-              builderFromSnapshot: userFromDocumentSnapshot,
-              updatePoint: UserViewFactory,
+              base: 'clientes',
+              itemBuilder: (cliente) => Text(cliente.name),
+              idItem: (cliente) => cliente.id,
+              builderFromSnapshot: clienteFromDocumentSnapshot,
+              updatePoint: ClienteViewFactory,
             );
           }
         },

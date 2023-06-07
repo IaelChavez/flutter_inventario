@@ -21,8 +21,6 @@ Future<List<Sale>> getSales() async {
       id: doc.id,
       idFerret: doc.data()['idFerret'],
       idClient: doc.data()['idClient'],
-      pieces: doc.data()['pieces'],
-      total: doc.data()['total'],
     );
     sales.add(sale);
   });

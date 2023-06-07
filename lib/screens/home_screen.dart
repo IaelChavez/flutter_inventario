@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Widget widget;
     switch (index) {
       case 0:
-        widget = const UsersList();
+        widget = const ClienteList();
         break;
       case 1:
         widget = const FerretList();
