@@ -2,6 +2,7 @@ import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:practica_inventario/screens/screens.dart';
+import 'package:practica_inventario/themes/colores.dart';
 
 import '../widgets/appbar.dart';
 
@@ -14,13 +15,14 @@ class MenuScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: AppTheme.backgroundColorApp,
         body: Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children:[
@@ -29,14 +31,14 @@ class MenuScreen extends StatelessWidget {
                       height: 50,
                       width: MediaQuery.of(context).size.width / 1.5,
                       decoration: BoxDecoration(
-                        color: Colors.black12.withOpacity(0.05),
+                        color: AppTheme.primaryColor,
                         borderRadius: BorderRadius.circular(10)
                       ),
                       child: TextFormField(
                         decoration: const InputDecoration(
-                          prefixIcon: Icon(Icons.search, color: Color(0xFF676565),),
+                          prefixIcon: Icon(Icons.search, color: Colors.white,),
                           border: InputBorder.none,
-                          label: Text('Search', style: TextStyle(color: Color(0xFF676565),),)
+                          label: Text('Search', style: TextStyle(color: Colors.white,),)
                         )
                       )
                     ),
@@ -44,11 +46,11 @@ class MenuScreen extends StatelessWidget {
                       height: 50,
                       width: MediaQuery.of(context).size.width / 6, 
                       decoration: BoxDecoration(
-                        color: Colors.black12.withOpacity(0.05),
+                        color: AppTheme.primaryColor,
                         borderRadius: BorderRadius.circular(10)
                       ),
                       child: const Center(
-                        child: Icon(Icons.logout_outlined, color: Colors.redAccent,)
+                        child: Icon(Icons.logout_outlined, color: Colors.white,)
                         ),
                     ),
                   ]
@@ -58,7 +60,7 @@ class MenuScreen extends StatelessWidget {
                   height: 150,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                    color: Colors.black12.withOpacity(0.05),
+                    color: AppTheme.primaryColor,
                     borderRadius: BorderRadius.circular(10)
                   ),
                   child: Image.asset('assets/images/banner.jpg', fit: BoxFit.contain,),
@@ -75,7 +77,7 @@ class MenuScreen extends StatelessWidget {
                           padding: const EdgeInsets.only(left:15, right: 15),
                           height: 40,
                           decoration: BoxDecoration(
-                            color: Colors.black12.withOpacity(0.05),
+                            color: AppTheme.primaryColor,
                             borderRadius: BorderRadius.circular(20)
                           ),
                           child: Center(
@@ -83,7 +85,7 @@ class MenuScreen extends StatelessWidget {
                               child: Text(
                                 tabs[i],
                                 style: const TextStyle(
-                                  color: Colors.black38,
+                                  color: Colors.white,
                                   fontWeight: FontWeight.w500
                                 ),
                               )
@@ -99,7 +101,7 @@ class MenuScreen extends StatelessWidget {
                   height: 450,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                    color: Colors.black12.withOpacity(0.05),
+                    color: AppTheme.primaryColor,
                     borderRadius: BorderRadius.circular(10)
                   ),
                   child: Image.asset('assets/images/fondo_login.png', fit: BoxFit.cover,),

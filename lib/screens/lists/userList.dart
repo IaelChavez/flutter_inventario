@@ -13,18 +13,6 @@ class UsersList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: 'Users ',
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => userView()));
-            },
-          ),
-        ],
-      ),
       body: FutureBuilder<List<User>>(
         future: getUsers(),
         builder: (context, snapshot) {
