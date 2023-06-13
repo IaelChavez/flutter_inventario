@@ -23,10 +23,31 @@ Future<List<Ferret>> getFerrets() async {
       age: doc.data()['age'],
       color: doc.data()['color'],
       price: doc.data()['price'],
-      nationality: doc.data()['nationality'],
+      nationality: doc.data()['nationality'], 
+      idSupplier: doc.data()['idSupplier'],
       image: doc.data()['image'],
     );
     ferrets.add(ferret);
   });
   return ferrets;
+}
+
+Future<Ferret> getFerret(String id) async {
+  late Ferret ferret;
+  QuerySnapshot<Map<String, dynamic>> querySnapshot =
+      await FirebaseFirestore.instance.collection('ferrets').get();
+
+  querySnapshot.docs.forEach((doc) {
+    ferret = Ferret(
+      id: doc.id,
+      species: doc.data()['species'],
+      age: doc.data()['age'],
+      color: doc.data()['color'],
+      price: doc.data()['price'],
+      nationality: doc.data()['nationality'], 
+      idSupplier: doc.data()['idSupplier'],
+      image: doc.data()['image'],
+    );
+  });
+  return ferret;
 }

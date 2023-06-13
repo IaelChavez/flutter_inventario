@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:practica_inventario/Model/models.dart';
 import 'package:practica_inventario/controllers/controllers.dart';
+import 'package:practica_inventario/firebase/firebase_ferret.dart';
 
 
 String url(Object item, String base) {
@@ -14,11 +15,6 @@ String url(Object item, String base) {
     Ferret ferret = data.item;
     String imageValue = ferret.image;
     return imageValue;
-  } else if (base == 'sales') {
-    DataItem<dynamic> data = item as DataItem<dynamic>;
-    Sale sale = data.item;
-    //  String imageValue = sale.image;
-    //  return imageValue;
   } else if (base == 'supplier') {
     DataItem<dynamic> data = item as DataItem<dynamic>;
     Supplier supplier = data.item;
@@ -62,16 +58,6 @@ Widget buildObjectDetails(Object object, String base) {
         SizedBox(height: 8),
         buildDetailRow('Units:', ferret.nationality),
         SizedBox(height: 8),
-      ],
-    );
-  } else if (base == 'sales') {
-    DataItem<dynamic> data = object as DataItem<dynamic>;
-    Sale sale = data.item;
-    return Column(
-      children: [
-        buildDetailRow('idFerret:', sale.idFerret),
-        SizedBox(height: 8),
-        buildDetailRow('idClient:', sale.idClient),
       ],
     );
   } else if (base == 'suppliers') {

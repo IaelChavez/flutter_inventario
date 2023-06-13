@@ -101,7 +101,7 @@ class Lista<T> extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ClienteDetail(
+                              builder: (context) => Detail(
                                   documentId: idItem(item),
                                   base: base,
                                   builderFromSnapshot: builderFromSnapshot),

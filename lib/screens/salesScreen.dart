@@ -28,8 +28,6 @@ Widget SalesViewFactory(String id, String base) {
 }
 
 class _SalesScreen extends State<SalesScreen> {
-  File? _image;
-  final picker = ImagePicker();
 
   _SalesScreen({Key? key}) : super();
 
@@ -39,16 +37,6 @@ class _SalesScreen extends State<SalesScreen> {
 
   String _idFerret = '';
   String _idClient = '';
-
-
-  List<String> options = [
-    'Opción 1',
-    'Opción 2',
-    'Opción 3',
-    'Opción 4',
-  ];
-
-  String selectedImages = '';
 
   @override
   Widget build(BuildContext context) {
@@ -87,11 +75,11 @@ class _SalesScreen extends State<SalesScreen> {
                           return GridView.builder(
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2, // Dos columnas
+                              crossAxisCount: 2,
                               mainAxisSpacing:
-                                  10.0, // Espaciado vertical entre los elementos
+                                  10.0, 
                               crossAxisSpacing:
-                                  10.0, // Espaciado horizontal entre los elementos
+                                  10.0, 
                             ),
                             itemCount: documents.length,
                             itemBuilder: (context, index) {
@@ -103,14 +91,14 @@ class _SalesScreen extends State<SalesScreen> {
                               return GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    selectedImages = documentId;
+                                    _idFerret = documentId;
                                   });
                                 },
                                 child: AnimatedContainer(
                                   duration: Duration(milliseconds: 300),
                                   decoration: BoxDecoration(
                                     border: Border.all(
-                                      color: selectedImages == documentId
+                                      color: _idFerret == documentId
                                           ? Colors.blue
                                           : Colors.transparent,
                                       width: 2.0,
@@ -141,7 +129,7 @@ class _SalesScreen extends State<SalesScreen> {
                       try {
                         addSale({
                           'idFerret': _idFerret,
-                          'idClient': _idClient,
+                          'idClient': 'fijo',
                         });
 
                         Navigator.pop(context);

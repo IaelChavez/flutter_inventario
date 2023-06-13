@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:practica_inventario/widgets/card.dart';
+import 'package:practica_inventario/widgets/saleCard.dart';
 import 'package:practica_inventario/widgets/widgets.dart';
 import 'package:practica_inventario/firebase/firebase_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,21 +9,21 @@ import 'package:practica_inventario/controllers/controllers.dart';
 
 import '../Model/clienteModel.dart';
 
-class ClienteDetail extends StatefulWidget {
+class Detail extends StatefulWidget {
   final String documentId;
   final String base;
   final builderFromSnapshot;
 
-  ClienteDetail(
+  Detail(
       {required this.documentId,
       required this.base,
       required this.builderFromSnapshot});
 
   @override
-  _ClienteDetail createState() => _ClienteDetail();
+  _Detail createState() => _Detail();
 }
 
-class _ClienteDetail extends State<ClienteDetail> {
+class _Detail extends State<Detail> {
   late Object item;
 
   @override
@@ -47,13 +48,22 @@ class _ClienteDetail extends State<ClienteDetail> {
               item = DataItem(
                   snapshot: documentSnapshot,
                   fromDocumentSnapshot: widget.builderFromSnapshot);
-            } else {}
-            return Container(
-              child: CustomCard(
-                item: item,
-                base: widget.base,
-              ),
-            );
+            }
+            if (widget.base == 'sales') {
+              return Container(
+                child: saleCard(
+                  item: item,
+                  base: widget.base,
+                ),
+              );
+            } else {
+              return Container(
+                child: CustomCard(
+                  item: item,
+                  base: widget.base,
+                ),
+              );
+            }
           }
         },
       ),

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:practica_inventario/widgets/appbar.dart';
 import 'package:practica_inventario/widgets/textField.dart';
@@ -11,6 +12,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import '../Model/models.dart';
 import '../firebase/firebase_ferret.dart';
+import '../firebase/firebase_supplier.dart';
 import '../firebase/firebase_services.dart';
 import '../widgets/button.dart';
 import 'lists/lists.dart';
@@ -43,19 +45,24 @@ class _FerretView extends State<FerretView> {
   final TextEditingController colorController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final TextEditingController nationalityController = TextEditingController();
+  TextEditingController idSupplierController = TextEditingController();
 
   bool _showErrorSpecies = false;
   bool _showErrorAge = false;
   bool _showErrorColor = false;
   bool _showErrorPrice = false;
   bool _showErrorNationality = false;
+  bool _showErrorIdSupplier = false;
   bool _showErrorImage = false;
+
+  bool _imageFlag = true;
 
   String _species = '';
   String _age = '';
   String _color = '';
   String _price = '';
   String _nationality = '';
+  String _idSupplier = '';
   String _imageUrl = '';
 
   vaciarCampos() {
@@ -70,6 +77,7 @@ class _FerretView extends State<FerretView> {
     _color = '';
     _price = '';
     _nationality = '';
+    _idSupplier = '';
     _imageUrl = '';
   }
 
@@ -94,9 +102,11 @@ class _FerretView extends State<FerretView> {
 
   Future<String> uploadImageToFirebase() async {
     if (_image == null) {
-      throw Exception('No se ha seleccionado una imagen');
-    }
-
+      setState(() {
+        _showErrorImage = true;
+      });
+      return '';
+    } else {
     firebase_storage.Reference storageReference = firebase_storage
         .FirebaseStorage.instance
         .ref()
@@ -107,6 +117,7 @@ class _FerretView extends State<FerretView> {
         await uploadTask.whenComplete(() => null);
 
     return await taskSnapshot.ref.getDownloadURL();
+    }
   }
 
   @override
@@ -182,21 +193,9 @@ class _FerretView extends State<FerretView> {
                                   ElevatedButton(
                                     onPressed: () async {
                                       await getImage();
+                                      _imageFlag = false;
                                     },
                                     child: const Text('Seleccionar'),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () async {
-                                      try {
-                                        _imageUrl =
-                                            await uploadImageToFirebase();
-                                        print(
-                                            'Imagen subida a Firebase Storage: $_imageUrl');
-                                      } catch (e) {
-                                        print('Error al subir la imagen: $e');
-                                      }
-                                    },
-                                    child: Text('Subir a Firebase'),
                                   ),
                                   const SizedBox(height: 20),
                                   CustomTextField(
@@ -272,6 +271,41 @@ class _FerretView extends State<FerretView> {
                                     },
                                   ),
                                   const SizedBox(height: 20),
+                                  TypeAheadFormField(
+                                    textFieldConfiguration:
+                                        TextFieldConfiguration(
+                                      controller: idSupplierController,
+                                      
+                                      decoration: InputDecoration(
+                                        labelText: 'Selecciona una opción',
+                                        border: OutlineInputBorder(),
+                                      ),
+                                    ),
+                                    suggestionsCallback: (pattern) async {
+                                      List<Data> dataList =
+                                          await getData();
+                                      List<String> suppliers = [];
+                                      dataList.forEach((data) {
+                                        suppliers.add(data.nombre);
+                                      });
+
+                                      return suppliers
+                                          .where((element) => element
+                                              .toLowerCase()
+                                              .contains(pattern.toLowerCase()))
+                                          .toList();
+                                    },
+                                    itemBuilder: (context, suggestion) {
+                                      return ListTile(
+                                        title: Text(suggestion),
+                                      );
+                                    },
+                                    onSuggestionSelected: (suggestion) {
+                                      _idSupplier = suggestion;
+                                      idSupplierController.text = suggestion;
+                                    },
+                                  ),
+                                  const SizedBox(height: 20),
                                 ],
                               ),
                             ),
@@ -286,6 +320,7 @@ class _FerretView extends State<FerretView> {
                                     'color': _color,
                                     'price': _price,
                                     'nationality': _nationality,
+                                    'idSupplier': _idSupplier,
                                     'image': _imageUrl,
                                   }, widget.documentId!);
                                 },
@@ -314,6 +349,10 @@ class _FerretView extends State<FerretView> {
                                       _showErrorPrice = true;
                                     } else if (_validar(_nationality)) {
                                       _showErrorNationality = true;
+                                    } else if (_validar(_idSupplier)) {
+                                      _showErrorIdSupplier = true;
+                                    } else if (_imageFlag) {
+                                      _showErrorImage = true;
                                     } else {
                                       // El formulario es válido, envía los datos
                                       try {
@@ -323,6 +362,7 @@ class _FerretView extends State<FerretView> {
                                           'color': _color,
                                           'price': _price,
                                           'nationality': _nationality,
+                                          'idSupplier': _idSupplier,
                                           'image': _imageUrl,
                                         });
                                         vaciarCampos();
@@ -365,6 +405,10 @@ class _FerretView extends State<FerretView> {
                             Visibility(
                               visible: _showErrorNationality,
                               child: const Text('Rellena la Nacionalidad.'),
+                            ),
+                            Visibility(
+                              visible: _showErrorIdSupplier,
+                              child: const Text('Selecciona el proveedor.'),
                             ),
                             Visibility(
                               visible: _showErrorImage,
@@ -522,6 +566,7 @@ class _FerretView extends State<FerretView> {
                                             'color': _color,
                                             'price': _price,
                                             'nationality': _nationality,
+                                            'idSupplier': _idSupplier,
                                             'image': _imageUrl,
                                           }, widget.documentId!);
                                           Navigator.pop(context);
@@ -572,6 +617,7 @@ class _FerretView extends State<FerretView> {
                                                   'units': _color,
                                                   'price': _price,
                                                   'nationality': _nationality,
+                                                  'idSupplier': _idSupplier,
                                                   'image': _imageUrl,
                                                 });
                                                 vaciarCampos();

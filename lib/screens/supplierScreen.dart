@@ -45,7 +45,6 @@ class _SupplierScreen extends State<SupplierScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController companyController = TextEditingController();
 
-  bool _showErrorId = false;
   bool _showErrorName = false;
   bool _showErrorLastName = false;
   bool _showErrorEmail = false;
@@ -221,16 +220,13 @@ class _SupplierScreen extends State<SupplierScreen> {
                               text: 'Guardar',
                               onPressed: () {
                                 setState(() {
-                                  _showErrorId = false;
                                   _showErrorName = false;
                                   _showErrorLastName = false;
                                   _showErrorEmail = false;
                                   _showErrorCompany = false;
                                   _showErrorImage = false;
                                   // Validar cada campo individualmente para mostrar la alerta una por una
-                                  if (_validar(_id)) {
-                                    _showErrorId = true;
-                                  } else if (_validar(_name)) {
+                                  if (_validar(_name)) {
                                     _showErrorName = true;
                                   } else if (_validar(_lastName)) {
                                     _showErrorLastName = true;
@@ -438,16 +434,13 @@ class _SupplierScreen extends State<SupplierScreen> {
                                       text: 'Guardar',
                                       onPressed: () {
                                         setState(() {
-                                          _showErrorId = false;
                                           _showErrorName = false;
                                           _showErrorLastName = false;
                                           _showErrorEmail = false;
                                           _showErrorCompany = false;
                                           _showErrorImage = false;
                                           // Validar cada campo individualmente para mostrar la alerta una por una
-                                          if (_validar(_id)) {
-                                            _showErrorId = true;
-                                          } else if (_validar(_name)) {
+                                          if (_validar(_name)) {
                                             _showErrorName = true;
                                           } else if (_validar(_lastName)) {
                                             _showErrorLastName = true;

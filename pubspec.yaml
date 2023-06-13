@@ -51,6 +51,7 @@ dependencies:
   curved_labeled_navigation_bar: ^2.0.2
   flutter_dropdown: ^1.0.1+hotfix.1
   flutter_typeahead: ^4.6.1
+  google_sign_in: ^6.1.4
 
 dev_dependencies:
   flutter_test:

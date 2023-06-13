@@ -7,6 +7,7 @@ class Ferret {
   final String color;
   final String price;
   final String nationality;
+  final String idSupplier;
   final String image;
 
   Ferret({
@@ -16,6 +17,7 @@ class Ferret {
     required this.color,
     required this.price,
     required this.nationality,
+    required this.idSupplier,
     required this.image,
   });
 
@@ -28,6 +30,7 @@ class Ferret {
       color: data['color'] ?? '',
       price: data['price'] ?? '',
       nationality: data['nationality'] ?? '',
+      idSupplier: data['idSupplier'] ?? '',
       image: data['image'] ?? '',
     );
   }
@@ -42,6 +45,7 @@ Ferret ferretFromDocumentSnapshot(DocumentSnapshot snapshot) {
     color: data['color'],
     price: data['price'],
     nationality: data['nationality'],
+    idSupplier: data['idSupplier'],
     image: data['image'],
   );
 }

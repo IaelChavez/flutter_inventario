@@ -29,6 +29,13 @@
             {
               "client_id": "474384953153-fh37b5scmic758285ovvaks83uj42t37.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "474384953153-gr4i41pv01bl8jvl6cqomk4fgtt7ncno.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.practicaInventario"
+              }
             }
           ]
         }
