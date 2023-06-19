@@ -88,6 +88,7 @@ Widget buildDetailRow(String label, dynamic value) {
         style: const TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.bold,
+
         ),
       ),
       Text(

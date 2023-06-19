@@ -1,6 +1,7 @@
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:flutter/material.dart';
+import 'package:practica_inventario/themes/colores.dart';
 
 class BottomBar extends StatelessWidget implements PreferredSizeWidget {
   final int index;
@@ -16,39 +17,40 @@ class BottomBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return  CurvedNavigationBar(
           height: 60,
-          buttonBackgroundColor: Colors.redAccent,
-          backgroundColor: const Color(0xFF1E1E1E).withOpacity(0.2),
+          color: AppTheme.primaryAppBarColor,
+          buttonBackgroundColor: AppTheme.pressedAppBarColor,
+          backgroundColor: AppTheme.backgroundAppBarColor,
           index: index,
           animationDuration: const Duration(milliseconds: 200),
           items: const [
             CurvedNavigationBarItem(
               child: Icon(
                 Icons.supervised_user_circle,
-                color: Colors.black54,
+                color: Colors.white,
               ),
             ),
             CurvedNavigationBarItem(
               child: Icon(
                 Icons.add_to_photos_sharp,
-                color: Colors.black54,
+                color: Colors.white,
               ),
             ),
             CurvedNavigationBarItem(
               child: Icon(
                 Icons.home,
-                color: Colors.black54,
+                color: Colors.white,
               ),
             ),
             CurvedNavigationBarItem(
               child: Icon(
                 Icons.sell,
-                color: Colors.black54,
+                color: Colors.white,
               ),
             ),
             CurvedNavigationBarItem(
               child: Icon(
                 Icons.shopping_bag,
-                color: Colors.black54,
+                color: Colors.white,
               ),
             ),
           ],

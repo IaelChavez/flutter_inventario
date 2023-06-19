@@ -31,90 +31,103 @@ class Lista<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/fondo.jpg'),
-            fit: BoxFit.cover,
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.8),
+            borderRadius: BorderRadius.circular(10.0),
           ),
-        ),
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          body: Container(
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.8),
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            margin:
-                const EdgeInsets.symmetric(vertical: 50.0, horizontal: 20.0),
-            padding: const EdgeInsets.all(20.0),
-            child: ListView.builder(
-              itemCount: items.length,
-              itemBuilder: (context, index) {
-                final item = items[index];
-                return Container(
-                  height: 80, // Alto deseado del Card
-                  child: Card(
-                    elevation: 6,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.indigo[400],
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: const Icon(
+                        Icons.arrow_back_ios_new,
+                        color: Colors.white,
+                        size: 22,
+                      ),
                     ),
-                    color: Colors.white,
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: ListTile(
-                        leading: CircleAvatar(
-                          radius: 17,
-                          backgroundColor: Colors.blue,
-                          child: Icon(
-                            leadingIcon,
-                            color: Colors.white,
-                          ),
+                  )
+                ],
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: items.length,
+                  itemBuilder: (context, index) {
+                    final item = items[index];
+                    return SizedBox(
+                      height: 80, // Alto deseado del Card
+                      child: Card(
+                        elevation: 6,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
-                        title: itemBuilder(item),
-                        trailing:
-                            Row(mainAxisSize: MainAxisSize.min, children: [
-                          IconButton(
-                            icon: const Icon(Icons.edit),
-                            onPressed: () {
-                              if (updatePoint != null) {
-                                Widget instance =
-                                    updatePoint(idItem(item), base);
-
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => instance),
-                                );
-                              }
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.delete),
-                            onPressed: () {
-                              _deleteCliente(context, idItem(item), base);
-                            },
-                          ),
-                        ]),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Detail(
-                                  documentId: idItem(item),
-                                  base: base,
-                                  builderFromSnapshot: builderFromSnapshot),
+                        color: Colors.white,
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 8),
+                        child: ListTile(
+                            leading: CircleAvatar(
+                              radius: 17,
+                              backgroundColor: Colors.blue,
+                              child: Icon(
+                                leadingIcon,
+                                color: Colors.white,
+                              ),
                             ),
-                          );
-                        }),
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
-      ),
+                            title: itemBuilder(item),
+                            trailing:
+                                Row(mainAxisSize: MainAxisSize.min, children: [
+                              IconButton(
+                                icon: const Icon(Icons.edit),
+                                onPressed: () {
+                                  if (updatePoint != null) {
+                                    Widget instance =
+                                        updatePoint(idItem(item), base);
+
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => instance),
+                                    );
+                                  }
+                                },
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.delete),
+                                onPressed: () {
+                                  _deleteCliente(context, idItem(item), base);
+                                },
+                              ),
+                            ]),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Detail(
+                                      documentId: idItem(item),
+                                      base: base,
+                                      builderFromSnapshot: builderFromSnapshot),
+                                ),
+                              );
+                            }),
+                      ),
+                    );
+                  },
+                ),
+              )
+            ],
+          )),
     );
   }
 }
