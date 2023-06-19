@@ -51,3 +51,21 @@ Future<List<Data>> getData() async {
   });
   return list;
 }
+
+Future<Supplier> getSupplier(String id) async {
+  late Supplier supplier;
+  QuerySnapshot<Map<String, dynamic>> querySnapshot =
+      await FirebaseFirestore.instance.collection('suppliers').get();
+
+  querySnapshot.docs.forEach((doc) {
+    supplier = Supplier(
+      id: doc.id,
+      name: doc.data()['name'],
+      lastName: doc.data()['lastName'],
+      email: doc.data()['email'],
+      company: doc.data()['company'],
+      image: doc.data()['image'],
+    );
+  });
+  return supplier;
+}

@@ -3,6 +3,7 @@ import 'package:practica_inventario/Model/models.dart';
 import 'package:practica_inventario/controllers/controllers.dart';
 import 'package:practica_inventario/firebase/firebase_ferret.dart';
 
+import '../firebase/firebase_supplier.dart';
 
 String url(Object item, String base) {
   if (base == 'cliente') {
@@ -94,6 +95,127 @@ Widget buildDetailRow(String label, dynamic value) {
         style: const TextStyle(fontSize: 16),
       ),
       const SizedBox(height: 8),
+    ],
+  );
+}
+
+String getId(Object item)  {
+  DataItem<dynamic> data = item as DataItem<dynamic>;
+  Sale sale = data.item;
+  return sale.id;
+}
+
+Future<String> geturl(Object item) async {
+  DataItem<dynamic> data = item as DataItem<dynamic>;
+  Sale sale = data.item;
+  Ferret ferret = await getFerret(sale.idFerret);
+  return ferret.image;
+}
+
+Widget buildTitle(String title) {
+  return Text(
+    title,
+    style: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      color: Colors.blue[800],
+    ),
+  );
+}
+
+Widget buildValue(dynamic value) {
+  return Text(
+    value,
+    style: TextStyle(
+      fontSize: 16,
+      color: Colors.grey[700],
+    ),
+  );
+}
+
+Future<Widget> buildFerretDetail(Object object) async {
+  DataItem<dynamic> data = object as DataItem<dynamic>;
+  Sale sale = data.item;
+  Ferret ferret = await getFerret(sale.idFerret);
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.end,
+    children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          buildTitle('Especie'),
+          buildTitle(''),
+          buildTitle('Parametro 3'),
+        ],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          buildValue('Valor 1'),
+          buildValue('Valor 2'),
+          buildValue('Valor 3'),
+        ],
+      ),
+      SizedBox(height: 25),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          buildTitle('Parametro 4'),
+          buildTitle('Parametro 5'),
+          buildTitle('Parametro 6'),
+        ],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          buildValue('Valor 4'),
+          buildValue('Valor 5'),
+          buildValue('Valor 6'),
+        ],
+      ),
+      SizedBox(height: 15),
+    ],
+  );
+}
+
+Future<Widget> buildSupplierDetail(Object object) async {
+  DataItem<dynamic> data = object as DataItem<dynamic>;
+  Sale sale = data.item;
+  Ferret ferret = await getFerret(sale.idFerret);
+  Supplier supplier = await getSupplier(ferret.idSupplier);
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.end,
+    children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          buildTitle('Parametro 1'),
+          buildTitle('Parametro 2'),
+        ],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          buildValue('Valor 1'),
+          buildValue('Valor 2'),
+        ],
+      ),
+      SizedBox(height: 25),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          buildTitle('Parametro 3'),
+          buildTitle('Parametro 4'),
+        ],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          buildValue('Valor 3'),
+          buildValue('Valor 4'),
+        ],
+      ),
+      SizedBox(height: 15),
     ],
   );
 }

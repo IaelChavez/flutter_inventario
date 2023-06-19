@@ -50,11 +50,14 @@ class _Detail extends State<Detail> {
                   fromDocumentSnapshot: widget.builderFromSnapshot);
             }
             if (widget.base == 'sales') {
-              return Container(
-                child: saleCard(
-                  item: item,
-                  base: widget.base,
-                ),
+              return Column(
+                children: [
+                  CustomAppBar(title: 'title'),
+                  saleCard(
+                    item: item,
+                    base: widget.base,
+                  ),
+                ],
               );
             } else {
               return Container(

@@ -169,6 +169,14 @@ class _FerretView extends State<FerretView> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
+                                  ElevatedButton(
+                                    onPressed: () async {
+                                      await getImage();
+                                      _imageFlag = false;
+                                    },
+                                    child: const Text('Seleccionar'),
+                                  ),
+                                  const SizedBox(height: 20),
                                   _image == null
                                       ? Icon(Icons.add_a_photo,
                                           size: 50, color: Colors.grey)
@@ -190,12 +198,39 @@ class _FerretView extends State<FerretView> {
                                           ),
                                         ),
                                   const SizedBox(height: 20),
-                                  ElevatedButton(
-                                    onPressed: () async {
-                                      await getImage();
-                                      _imageFlag = false;
+                                  TypeAheadFormField(
+                                    textFieldConfiguration:
+                                        TextFieldConfiguration(
+                                      controller: idSupplierController,
+                                      
+                                      decoration: InputDecoration(
+                                        labelText: 'Selecciona una opción',
+                                        border: OutlineInputBorder(),
+                                      ),
+                                    ),
+                                    suggestionsCallback: (pattern) async {
+                                      List<Data> dataList =
+                                          await getData();
+                                      List<String> suppliers = [];
+                                      dataList.forEach((data) {
+                                        suppliers.add(data.nombre);
+                                      });
+
+                                      return suppliers
+                                          .where((element) => element
+                                              .toLowerCase()
+                                              .contains(pattern.toLowerCase()))
+                                          .toList();
                                     },
-                                    child: const Text('Seleccionar'),
+                                    itemBuilder: (context, suggestion) {
+                                      return ListTile(
+                                        title: Text(suggestion),
+                                      );
+                                    },
+                                    onSuggestionSelected: (suggestion) {
+                                      _idSupplier = suggestion;
+                                      idSupplierController.text = suggestion;
+                                    },
                                   ),
                                   const SizedBox(height: 20),
                                   CustomTextField(
@@ -268,41 +303,6 @@ class _FerretView extends State<FerretView> {
                                       setState(() {
                                         _nationality = value;
                                       });
-                                    },
-                                  ),
-                                  const SizedBox(height: 20),
-                                  TypeAheadFormField(
-                                    textFieldConfiguration:
-                                        TextFieldConfiguration(
-                                      controller: idSupplierController,
-                                      
-                                      decoration: InputDecoration(
-                                        labelText: 'Selecciona una opción',
-                                        border: OutlineInputBorder(),
-                                      ),
-                                    ),
-                                    suggestionsCallback: (pattern) async {
-                                      List<Data> dataList =
-                                          await getData();
-                                      List<String> suppliers = [];
-                                      dataList.forEach((data) {
-                                        suppliers.add(data.nombre);
-                                      });
-
-                                      return suppliers
-                                          .where((element) => element
-                                              .toLowerCase()
-                                              .contains(pattern.toLowerCase()))
-                                          .toList();
-                                    },
-                                    itemBuilder: (context, suggestion) {
-                                      return ListTile(
-                                        title: Text(suggestion),
-                                      );
-                                    },
-                                    onSuggestionSelected: (suggestion) {
-                                      _idSupplier = suggestion;
-                                      idSupplierController.text = suggestion;
                                     },
                                   ),
                                   const SizedBox(height: 20),
