@@ -1,15 +1,76 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:practica_inventario/screens/home_screen.dart';
 
+import '../firebase/auth.dart';
 import '../widgets/button.dart';
 import 'registerUserScreen.dart';
 import 'screens.dart';
 
-class LoginScreen2 extends StatelessWidget {
-  LoginScreen2({Key? key}) : super(key: key);
+class LoginScreen2 extends StatefulWidget {
+  const LoginScreen2({Key? key}) : super(key: key);
 
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  @override
+  State<LoginScreen2> createState() => _LoginScreen2State();
+}
+
+class _LoginScreen2State extends State<LoginScreen2> {
+  String? errorMessage = "";
+  bool _isLogin = false;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  final User? user = Auth().currentUser;
+  Future<void> signInWithEmailAndPassword() async {
+    try {
+      await Auth().signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      _isLogin = true;
+
+      if (_isLogin) {
+        _emailController.text = '';
+        _passwordController.text = '';
+        _isLogin = false;
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const HomeScreen()));
+      }
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        errorMessage = e.message;
+      });
+    }
+  }
+
+  Future<void> createUserWithEmailAndPassword() async {
+    try {
+      await Auth().createUserWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      _isLogin = true;
+
+      if (_isLogin) {
+        _emailController.text = '';
+        _passwordController.text = '';
+        _isLogin = false;
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const HomeScreen()));
+      }
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        errorMessage = e.message;
+      });
+    }
+  }
+
+  Widget _errorMessage() {
+    return Text(
+      errorMessage == '' ? '' : '$errorMessage',
+      style: const TextStyle(color: Colors.red),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +100,7 @@ class LoginScreen2 extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
-                    controller: emailController,
+                    controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
                       enabledBorder: OutlineInputBorder(
@@ -54,7 +115,7 @@ class LoginScreen2 extends StatelessWidget {
                     style: const TextStyle(color: Colors.white)),
                 const SizedBox(height: 20),
                 TextFormField(
-                    controller: passwordController,
+                    controller: _passwordController,
                     obscureText: true,
                     decoration: const InputDecoration(
                       enabledBorder: OutlineInputBorder(
@@ -67,14 +128,12 @@ class LoginScreen2 extends StatelessWidget {
                       hintStyle: TextStyle(color: Colors.white),
                     ),
                     style: const TextStyle(color: Colors.white)),
+                _errorMessage(),
                 const SizedBox(height: 20),
                 GradientButton(
                   onPressed: () {
                     //  ToDo: Aquí va la lógica para validar los datos de inicio de sesión
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const HomeScreen()));
+                    signInWithEmailAndPassword();
                   },
                   text: 'Iniciar sesión',
                 ),
@@ -82,10 +141,7 @@ class LoginScreen2 extends StatelessWidget {
                 GradientButton(
                   onPressed: () {
                     //  ToDo: Aquí va la lógica para validar los datos de inicio de sesión
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => RegisterUserView()));
+                   createUserWithEmailAndPassword();
                   },
                   text: 'Registrarse',
                 ),
@@ -95,6 +151,5 @@ class LoginScreen2 extends StatelessWidget {
         ),
       ),
     );
-
   }
 }
