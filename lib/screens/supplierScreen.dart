@@ -9,15 +9,14 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import '../Model/models.dart';
 import '../firebase/firebase_supplier.dart';
 import '../firebase/firebase_services.dart';
-import '../firebase/firebase_cliente.dart';
 import '../widgets/appbar.dart';
 import '../widgets/button.dart';
 import '../widgets/textField.dart';
 import 'lists/lists.dart';
 
 class SupplierScreen extends StatefulWidget {
-  String? documentId;
-  String? base;
+  final String? documentId;
+  final String? base;
 
   SupplierScreen({super.key, this.documentId, this.base});
 
@@ -36,8 +35,6 @@ class _SupplierScreen extends State<SupplierScreen> {
   final picker = ImagePicker();
 
   final _formKey = GlobalKey<FormState>();
-
-  final List<String> _errors = [];
 
   final TextEditingController idController = TextEditingController();
   final TextEditingController nameController = TextEditingController();

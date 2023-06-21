@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:practica_inventario/Model/models.dart';
 import 'package:practica_inventario/controllers/controllers.dart';
 
 class CustomCard extends StatelessWidget {

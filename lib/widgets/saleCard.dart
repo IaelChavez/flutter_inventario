@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:practica_inventario/Model/models.dart';
 import 'package:practica_inventario/controllers/controllers.dart';
-import 'package:practica_inventario/widgets/appbar.dart';
 
 class saleCard extends StatelessWidget {
   final Object item;

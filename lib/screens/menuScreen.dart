@@ -1,12 +1,9 @@
-import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
-import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:practica_inventario/firebase/auth.dart';
 import 'package:practica_inventario/screens/screens.dart';
 import 'package:practica_inventario/themes/colores.dart';
 
-import '../widgets/appbar.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({Key? key}) : super(key: key);

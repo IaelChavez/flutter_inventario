@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:practica_inventario/firebase/firebase_services.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:practica_inventario/Model/clienteModel.dart';
 import 'package:practica_inventario/screens/screens.dart';
-import 'package:practica_inventario/widgets/listStatic.dart';
 import 'package:practica_inventario/widgets/widgets.dart';
 
 import '../../Model/saleModel.dart';

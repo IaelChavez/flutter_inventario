@@ -18,8 +18,8 @@ import '../widgets/button.dart';
 import 'lists/lists.dart';
 
 class FerretView extends StatefulWidget {
-  String? documentId;
-  String? base;
+  final String? documentId;
+  final String? base;
 
   FerretView({super.key, this.documentId, this.base});
 
@@ -37,8 +37,6 @@ class _FerretView extends State<FerretView> {
   _FerretView({Key? key}) : super();
 
   final _formKey = GlobalKey<FormState>();
-
-  final List<String> _errors = [];
 
   final TextEditingController speciesController = TextEditingController();
   final TextEditingController ageController = TextEditingController();

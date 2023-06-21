@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/services.dart';
+import 'package:practica_inventario/firebase/auth.dart';
 import 'package:practica_inventario/firebase/firebase_cliente.dart';
 import 'package:practica_inventario/widgets/appbar.dart';
 import 'package:practica_inventario/widgets/textField.dart';
@@ -13,8 +14,8 @@ import '../widgets/button.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ClienteView extends StatefulWidget {
-  String? documentId;
-  String? base;
+  final String? documentId;
+  final String? base;
 
   ClienteView({this.documentId, this.base});
   @override
@@ -308,14 +309,14 @@ class _ClienteView extends State<ClienteView> {
                                           } else {
                                             // El formulario es válido, envía los datos
                                             try {
-                                              addCliente({
+                                              addOneCliente({
                                                 "name": _name,
                                                 "lastName": _lastName,
                                                 "age": _age,
                                                 "gender": _gender,
                                                 "email": _email,
                                                 "password": _password,
-                                              });
+                                              }, Auth().currentUser!.uid);
                                               vaciarCampos();
                                             } catch (e) {}
                                           }
@@ -547,15 +548,15 @@ class _ClienteView extends State<ClienteView> {
                               } else {
                                 // El formulario es válido, envía los datos
                                 try {
-                                  addCliente({
+                                  addOneCliente({
                                     "name": _name,
                                     "lastName": _lastName,
                                     "age": _age,
                                     "gender": _gender,
                                     "email": _email,
                                     "password": _password,
-                                    "image": _imageUrl,
-                                  });
+                                  }, Auth().currentUser!.uid);
+                                  vaciarCampos();
                                   vaciarCampos();
                                 } catch (e) {}
                               }

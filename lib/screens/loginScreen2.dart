@@ -2,9 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:practica_inventario/screens/home_screen.dart';
 
-import '../firebase/auth.dart';
-import '../widgets/button.dart';
-import 'screens.dart';
+import 'package:practica_inventario/firebase/auth.dart';
+import 'package:practica_inventario/widgets/button.dart';
 
 class LoginScreen2 extends StatefulWidget {
   const LoginScreen2({Key? key}) : super(key: key);
@@ -32,6 +31,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
         _emailController.text = '';
         _passwordController.text = '';
         _isLogin = false;
+        print('user'+user!.uid);
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const HomeScreen()));
       }
@@ -54,6 +54,7 @@ class _LoginScreen2State extends State<LoginScreen2> {
         _emailController.text = '';
         _passwordController.text = '';
         _isLogin = false;
+        
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const HomeScreen()));
       }

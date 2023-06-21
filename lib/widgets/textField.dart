@@ -26,7 +26,6 @@ class CustomTextField extends StatefulWidget  {
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
-  String _value = '';
 
   @override
   Widget build(BuildContext context) {

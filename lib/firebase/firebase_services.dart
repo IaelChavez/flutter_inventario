@@ -6,8 +6,9 @@ import '../Model/clienteModel.dart';
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 
-Future<void> addCliente(Map<String, dynamic> data) async {
-  await db.collection('clientes').add(data);
+
+Future<void> addOneCliente(Map<String, dynamic> data, String documentId) async {
+  await db.collection("your_collection").doc(documentId).set(data);
 }
 
 Future<List<Cliente>>? getClientes() async {

@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:practica_inventario/widgets/card.dart';
 import 'package:practica_inventario/widgets/saleCard.dart';
@@ -7,7 +6,6 @@ import 'package:practica_inventario/firebase/firebase_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:practica_inventario/controllers/controllers.dart';
 
-import '../Model/clienteModel.dart';
 
 class Detail extends StatefulWidget {
   final String documentId;
